@@ -29,9 +29,9 @@ permalink: "{{ page.fileSlug }}/"
         {% endfor %}
       </div>
       <div id="last-modified">
-				Last modified {{ page.date | toDuration }}
+				Última modificación {{ page.date | toDuration }}
 				/
-				<a href="https://github.com/dinhanhthi/notes/edit/master/{{ page.inputPath | replace('notes/', '') }}">Edit on Github</a>
+				<a href="https://github.com/linuxmobile/notes/edit/master/{{ page.inputPath | replace('notes/', '') }}">Edita en Github</a>
       </div>
     </div>
   {% endif %}
@@ -47,7 +47,7 @@ permalink: "{{ page.fileSlug }}/"
           <div class="warning-icon">
             <img class="keep-original" src="/img_src/icons/time.svg" alt="Warning">
           </div>
-          <div>This post was <strong>updated more than 1 year ago</strong>, some information may be outdated!</div>
+          <div>Este post no ha sido <strong>hace más de un año</strong>, alguna información puede estar desactualizada! CUIDADO!</div>
         </div>
       {% endif %}
 
@@ -56,14 +56,14 @@ permalink: "{{ page.fileSlug }}/"
           <div class="warning-icon">
             <img class="keep-original" src="/img_src/icons/warning.svg" alt="Warning">
           </div>
-          <div>This is a low-quality note, read at your own risk!</div>
+          <div>Esta es una nota de baja-calidad. Utilízala bajo tu propio riesgo!</div>
         </div>
       {% elif notfull %}
         <div class="warning not-full-warning">
           <div class="warning-icon">
             <img class="keep-original" src="/img_src/icons/warning.svg" alt="Warning">
           </div>
-          <div>This is a draft, the content is not complete and of poor quality!</div>
+          <div>Este es un borrador. El contenido puede no estar completo y con una baja resolución de detalles!</div>
         </div>
       {% endif %}
 

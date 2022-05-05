@@ -15,7 +15,7 @@
 
   {% set pageUrlLength = page.url | length %}
   {% if pageUrlLength > 1 %}
-    {% set pageTitle = [title or renderData.title, " | Note of Thi"] | join %}
+    {% set pageTitle = [title or renderData.title, " | Notas de linux"] | join %}
   {% else %}
     {% set pageTitle = title or renderData.title or settings.title %}
   {% endif %}

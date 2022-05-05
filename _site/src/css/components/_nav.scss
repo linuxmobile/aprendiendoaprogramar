@@ -1,0 +1,263 @@
+// navigation
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  padding: 0 1.5rem;
+  background: $color-bg-nav;
+
+  nav #nav .nav-search .nav-search__input {
+    padding-right: 1.5rem;
+  }
+
+  .reading-progress-container {
+    padding-bottom: 1px;
+    background: $color-background;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    z-index: 9999;
+    left: 0;
+
+    #reading-progress {
+      border-bottom: 2px solid $color-yellow;
+      width: 100vw;
+      transform: translate(-100vw, 0);
+      will-change: transform;
+      pointer-events: none;
+    }
+  }
+
+  @media (max-width: $grid-lg) {
+    padding: 0 1rem;
+    nav #nav .nav-search .nav-search__input {
+      padding-right: 1rem;
+    }
+  }
+
+  @media (max-width: $grid-sm) {
+    padding: 0 0.5em;
+    nav #nav .nav-search .nav-search__input {
+      padding-right: 0.5rem;
+    }
+  }
+
+  #nav {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+
+    a {
+      color: #ccc;
+      font-size: 1rem;
+      white-space: nowrap;
+      margin-right: 15px;
+
+      display: flex;
+      align-items: center;
+      img {
+        margin-right: 5px;
+      }
+      padding: 0 0.5rem;
+      font-size: 1.1rem;
+      white-space: nowrap;
+      &:hover {
+        color: #fff;
+        cursor: pointer;
+        text-decoration: none;
+      }
+    }
+
+    .nav-item {
+      text-align: left;
+      margin-right: 5px;
+      @media (min-width: 421px) {
+        padding-left: 0 !important;
+      }
+      @include screen-sm-down {
+        span {
+          display: none;
+        }
+        width: unset !important;
+      }
+      @include screen-sm-up {
+        margin-right: 1.2rem;
+      }
+    }
+
+    .nav-dark-light {
+      padding: 5px;
+      cursor: pointer;
+      display: inline-flex;
+      margin-right: 1rem;
+      @include screen-sm-down {
+        margin-right: 0;
+      }
+    }
+
+    .nav-github {
+      text-align: right;
+      padding-right: 0 !important;
+      margin-right: 0 !important;
+      display: inline-flex;
+      &:hover {
+        img {
+          filter: invert(0.4);
+        }
+      }
+    }
+
+    .nav-search {
+      display: block;
+      background-image: linear-gradient(
+        to right,
+        #3d4251,
+        #3b3f4c,
+        #393d46,
+        #373a41,
+        #35373c
+      );
+      width: 100%;
+      position: relative;
+      form {
+        display: flex;
+      }
+      .nav-search__input {
+        border: 0;
+        background: transparent;
+        color: #ddd;
+        font-size: 1.05rem;
+        padding: 0.65rem 0.5rem;
+        width: 100%;
+        &:focus {
+          outline: none;
+          border: 0;
+        }
+      }
+
+      #nav-search__result-container {
+        position: absolute;
+        max-height: 80vh;
+        overflow: auto;
+        width: 100%;
+        background: $color-bg-nav;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        padding: 0;
+        filter: drop-shadow(2px 4px 6px black);
+
+        @include screen-md-down {
+          position: fixed;
+          left: 0;
+          right: 0;
+          border-radius: 0;
+        }
+
+        ul#nav-search__ul {
+          padding: 0;
+          margin: 0;
+          list-style: none;
+          li {
+            display: flex;
+            padding: 10px;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+            .item__icon {
+              .fontello-icon {
+                font-size: 1.4rem;
+              }
+            }
+            .item__content {
+              padding: 0 10px;
+              width: 100%;
+              overflow: hidden;
+              text-overflow: ellipsis;
+
+              .keywords {
+                opacity: 0.6;
+                background: #000;
+                border-radius: 3px;
+                padding: 0px 5px;
+                font-size: 80%;
+              }
+
+              h3 {
+                margin: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                .external-badge {
+                  background: #eee;
+                  color: #444;
+                  border-radius: 0.6rem;
+                  font-size: 65%;
+                  line-height: 1.2;
+                  padding: 1px 5px;
+                  margin-right: 5px;
+                  font-weight: normal;
+                  font-family: $font-main;
+                }
+                a {
+                  color: #efb232;
+                  white-space: inherit;
+                  padding: 0;
+                  text-align: left;
+                  font-weight: normal;
+                  font-size: $font-size;
+                  line-height: 1.5;
+                  margin: 0;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  display: block;
+                  &:hover {
+                    border-bottom: none;
+                    color: $color-blue;
+                  }
+                }
+              }
+              p {
+                text-align: left;
+                margin: 0;
+                line-height: 1.5;
+                font-size: 0.95rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+            }
+            .enter {
+              width: 20px;
+              display: none;
+            }
+            &.selected {
+              background: $color-background;
+              .enter {
+                display: block;
+              }
+            }
+          }
+          mark {
+            background: none;
+            color: inherit;
+            box-shadow: inset 0 -1px 0 0 #fff;
+            border-radius: 0;
+            padding: 0;
+          }
+        }
+        #nav-search__no-result {
+          padding: 0 10px;
+          p {
+            text-align: left;
+          }
+        }
+      }
+    }
+  }
+}

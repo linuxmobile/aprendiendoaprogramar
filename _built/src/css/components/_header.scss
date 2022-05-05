@@ -1,0 +1,228 @@
+/* "Content-visibility: auto" move the images over the other elements
+   Set z-index to keep the nav over the rasterized images */
+
+header nav {
+  z-index: 1000;
+}
+
+#nav {
+  z-index: 2;
+  position: relative;
+}
+
+@keyframes wave-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(14deg);
+  } /* The following five values can be played with to make the waving more or less extreme */
+  20% {
+    transform: rotate(-8deg);
+  }
+  30% {
+    transform: rotate(14deg);
+  }
+  40% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(0deg);
+  } /* Reset for the last half to pause */
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+header {
+  background: $color-background;
+  color: $font-color;
+
+  .header-container {
+    width: 900px;
+    padding: 5rem 1rem 1rem;
+    text-align: center;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0;
+    margin-top: 0;
+    display: inline-flex;
+    .special-title {
+      animation-name: wave-animation; /* Refers to the name of your @keyframes element below */
+      animation-duration: 2.5s; /* Change to speed up or slow down */
+      animation-iteration-count: infinite; /* Never stop waving :) */
+      transform-origin: 70% 70%; /* Pivot around the bottom-left palm */
+      // display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        margin-right: 10px;
+        height: 2.2rem;
+      }
+    }
+    .draft-badge {
+      height: fit-content;
+      background: #7c7c7c;
+      font-size: 0.8rem;
+      padding: 1px 5px;
+      border-radius: 0.6rem;
+      font-weight: normal;
+      font-family: "Poppins", Arial, Helvetica, sans-serif;
+      margin-left: 5px;
+    }
+  }
+
+  p {
+    margin-top: 1rem;
+  }
+
+  .header-logo {
+    width: $header-logo;
+    height: $header-logo;
+    margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    img {
+      width: auto;
+      height: 100%;
+    }
+    &.icon-white {
+      width: $header-logo + 7px;
+      height: $header-logo + 7px;
+      background: #fff;
+      border-radius: 50%;
+      padding: 10px;
+    }
+  }
+
+  .social {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    a {
+      margin-right: 10px;
+      margin-bottom: 10px;
+      display: inline-flex;
+      padding: 10px;
+      background: #343950;
+      box-shadow: 8px 14px 38px #272c310f, 1px 3px 8px #272c3108;
+      border-radius: $box-border-radius * 2;
+      &:last-child {
+        margin-right: 0;
+      }
+
+      // @include screen-lg-up {
+      //   margin-right: 20px;
+      // }
+
+      &:hover {
+        img {
+          transform: translate(0px, -2px);
+        }
+      }
+      img {
+        transition: transform 0.2s;
+      }
+    }
+  }
+
+  #more-info {
+    padding: 1rem;
+    #note-tag {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #444;
+      & > a {
+        color: $font-a;
+        margin-right: 10px;
+        &::before {
+          content: "#";
+        }
+        &:hover {
+          color: $a-hover;
+          border-bottom-color: $font-a;
+        }
+      }
+    }
+    #last-modified {
+      padding-top: 10px;
+      font-style: italic;
+      a {
+        color: $font-a;
+        &:hover {
+          color: $a-hover;
+          border-bottom-color: $font-a;
+        }
+      }
+    }
+  }
+}
+
+.wave-border {
+  &::after {
+    content: "";
+    left: -3rem;
+    top: calc(3rem - 4rem / 2);
+    float: left;
+    display: block;
+    height: 2rem;
+    width: 100%;
+    background-size: 100% 100%;
+  }
+  &.wave-border-index::after {
+    background: hsla(0, 0%, 100%, 0.5);
+    background-image: var(--wave-bd-index);
+  }
+  &.wave-border-post::after {
+    background: #fff;
+    background-image: var(--wave-bd-post);
+  }
+}
+
+.intro {
+  font-size: 1.02rem;
+  b,
+  strong {
+    color: $color-yellow;
+    font-weight: normal;
+  }
+  a {
+    color: #fff;
+  }
+}
+
+.job {
+  span {
+    background: $color-yellow;
+    color: #000;
+    padding: 3px 20px;
+    border-radius: 15px;
+    font-size: 1.02rem;
+  }
+}
+
+p.contact {
+  width: 100%;
+  text-align: center;
+  margin-bottom: $margin-bottom;
+  a {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    &:last-child {
+      margin-right: 0;
+    }
+    &:hover {
+      color: #fff;
+    }
+  }
+}

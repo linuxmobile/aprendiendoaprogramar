@@ -1,0 +1,7 @@
+An example from readme:
+.
+{color:red}red{color} light {color:yellow}yellow{color} light {color:green}green{color} light
+.
+<p><span style="color:red;">red</span> light <span style="color:yellow;">yellow</span> light <span style="color:green;">green</span> light</p>
+.
+

@@ -5,5 +5,5 @@ git clone https://github.com/dinhanhthi/notes.git
 echo "#### 3. Done cloning notes!"
 echo "#### 4. Cloning _site"
 cd ..
-git clone https://github.com/linuxmobile/_site.git
+git clone https://github.com/linuxmobile/_site.git ~/Templates/aprendiendoaprogramar/_site
 echo "#### 5. Done cloning _site"

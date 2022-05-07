@@ -5,7 +5,7 @@ icon: donate.svg
 permalink: /support-linux/
 ---
 
-I spend a lot of time learning something new. After each journey, I find that there is a shorter way that I wish I had known before. For this reason, I write ==**for free**== about the things I know/understand to help others save their time. If you find my work useful, give me some motivation, I'll be very grateful.
+He invetido tiempo y esfuerzo para traer material nuevo y de calidad. Después de una larga camino tratando de aprender algunas cosas, me doy cuenta que siempre hay un camino más sencillo. Por eso traigo este blog de notas ==**gratuito**== para compartiles lo que yo he aprendido. Si encontras todo este trabajo útil, y realmente te sirvió de ayuda, me encantaría que pudieras apoyarme, de alguna forma!
 
 {:.indent}
 - **Paypal**[/linuxmobile](https://www.paypal.me/linuxmobile)
@@ -13,4 +13,4 @@ I spend a lot of time learning something new. After each journey, I find that th
 - **Buy Me A Coffee**[/linuxmobile](https://www.buymeacoffee.com/linuxmobile)
 - **Encourage me with a letter**: [bdiez19@gmail.com](mailto:bdiez19@gmail.com)
 
-Thank you so much 💖.
+Muchas gracias por leer el blog, y llegar hasta este punto 💖.

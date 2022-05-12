@@ -34,7 +34,7 @@ module.exports = function (eleventyConfig) {
       tags: ["h2", "h3"],
       wrapper: "div",
       wrapperClass: "toc toc-common toc-js",
-      headingText: "In this note",
+      headingText: "En esta nota",
       headingTag: "div",
     }
   );

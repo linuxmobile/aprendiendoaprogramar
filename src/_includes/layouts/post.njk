@@ -45,23 +45,23 @@ permalink: "{{ page.fileSlug }}/"
       {% if lastUpdatedDays > settings.outdatedTime and not noOutdated %}
         <div class="danger not-full-warning">
           <div class="warning-icon">
-            <img class="keep-original" src="/img_src/icons/time.svg" alt="Warning">
+            {% icon "time" %}
           </div>
-          <div>Este post no ha sido actualizado <strong>hace más de un año</strong>, alguna información puede estar desactualizada! CUIDADO!</div>
+          <div>Este post no ha sido actualizado <strong>{{ page.date | toDuration }}</strong>, alguna información puede estar desactualizada! CUIDADO!</div>
         </div>
       {% endif %}
 
       {% if lowQuality %}
         <div class="danger low-quality-warning">
           <div class="warning-icon">
-            <img class="keep-original" src="/img_src/icons/warning.svg" alt="Warning">
+            {% icon "warning" %}
           </div>
           <div>Esta es una nota de baja-calidad. Utilízala bajo tu propio riesgo!</div>
         </div>
       {% elif notfull %}
         <div class="warning not-full-warning">
           <div class="warning-icon">
-            <img class="keep-original" src="/img_src/icons/warning.svg" alt="Warning">
+            {% icon "draft" %}
           </div>
           <div>Este es un borrador. El contenido puede no estar completo y con una baja resolución de detalles!</div>
         </div>

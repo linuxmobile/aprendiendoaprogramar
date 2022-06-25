@@ -121,12 +121,12 @@ En este sitio, vas a poder encontrarte todas las notas de cosas que he aprendido
                       {% set itemInfo = item2 | getTech(techs) %}
                       {% if itemInfo.url %}
                         <a href="{{ itemInfo.url }}" target="_blank">
-                          <div title="{{ itemInfo.name }}" class="skill-small hover-translate">
+                          <div data-title="{{ itemInfo.name }}" class="skill-small hover-translate tooltip-auto">
                             <img class="keep-original" src="/img/about/{{ itemInfo.icon }}" alt="{{ itemInfo.name }}" height="20" width="20">
                           </div>
                         </a>
                       {% else %}
-                        <div title="{{ itemInfo.name }}" class="skill-small hover-translate">
+                        <<div data-title="{{ itemInfo.name }}" class="skill-small hover-translate tooltip-auto">
                           <img class="keep-original" src="/img/about/{{ itemInfo.icon }}" alt="{{ itemInfo.name }}" height="20" width="20">
                         </div>
                       {% endif %}

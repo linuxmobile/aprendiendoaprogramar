@@ -147,3 +147,38 @@ pre {
   margin-right: -$inside-padding;
   padding: 0 $inside-padding;
 }
+
+/* Differences */
+.token.deleted {
+  background-color: var(--prism-highlight-line-remove-bg);
+}
+.token.inserted {
+  background-color: var(--prism-highlight-line-add-bg);
+}
+.token.deleted, .token.inserted, .token.unchanged {
+  &.prefix {
+    margin-left: -$inside-padding;
+    margin-right: 5px;
+    padding: 2.5px 5px;
+  }
+}
+.token.inserted:not(.prefix),
+.token.deleted:not(.prefix) {
+	display: block;
+  margin-left: -$inside-padding;
+  margin-right: -$inside-padding;
+  padding: 0 $inside-padding;
+}
+/* Make the + and - characters unselectable for copy/paste */
+.token.prefix.unchanged,
+.token.prefix.inserted,
+.token.prefix.deleted {
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+/* Unselectable copy/paste for comments */
+.token.comment, .token.comment + br {
+  -webkit-user-select: none;
+  user-select: none;
+}

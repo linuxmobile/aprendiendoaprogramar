@@ -44,7 +44,7 @@
   & > .ol-container {
     border: 0.5px solid var(--toc-title-bd);
     border-radius: 0.6rem;
-    padding: 1rem 0;
+    padding: 10px 0;
     width: 100%;
     display: flex;
     height: 100%;
@@ -56,7 +56,7 @@
       @include toc-title();
       margin-bottom: 1rem;
       padding: 0 1rem;
-      padding-bottom: 5px;
+      padding-bottom: 10px;
     }
   }
 
@@ -155,7 +155,7 @@
     margin-right: calc((900px - 100vw) / 2);
     border-left: none;
     position: sticky;
-    top: 60px;
+    top: $fixed-top;
     height: calc(100vh - 80px);
     & > .ol-container {
       width: fit-content;

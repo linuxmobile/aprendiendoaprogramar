@@ -97,6 +97,14 @@
   }
 }
 
+.scale-img-on-active {
+  &:active {
+    img {
+      transform: scale(0.9);
+    }
+  }
+}
+
 // Warning boxes
 // ----------------------------------------------------------------
 .info,
@@ -352,6 +360,13 @@ $gap: 5px;
   border-radius: $box-border-radius;
   .hs__title {
     cursor: pointer;
+
+    & > code {
+      background: none;
+      border: none;
+      font-size: 0.95rem;
+    }
+
     &::before {
       content: " ";
       color: var(--color-faded);
@@ -432,6 +447,7 @@ table {
   tbody > tr {
     &:nth-child(odd) {
       background: var(--table-bg);
+      color: var(--font-color-darker);
     }
     &:last-child {
       border-bottom: none;
@@ -664,6 +680,7 @@ input[type="search"]::-webkit-search-results-decoration {
   &.is-visible {
     opacity: 1;
     transition: opacity 0.3s 0s, visibility 0s 0s;
+    z-index: 999;
   }
   @include screen-sm-down {
     right: 20px;
@@ -673,54 +690,37 @@ input[type="search"]::-webkit-search-results-decoration {
 #buy-me-a-coffee {
   display: block;
   right: 20px;
+  z-index: 999;
   @include screen-sm-down {
     left: 20px;
   }
 }
 
-// Tooltips
-// https://www.w3schools.com/howto/howto_css_tooltip.asp
-.tooltip {
-  position: relative;
-  display: inline-block;
-
-  .tooltiptext {
-    visibility: hidden;
-    width: 80px;
-    background-color: #555;
-    color: #fff;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-    font-size: 1rem !important;
-
-    /* Position the tooltip text */
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -40px;
-
-    /* Fade in tooltip */
-    opacity: 0;
-    transition: opacity 0.5s;
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      margin-left: -5px;
-      border-width: 5px;
-      border-style: solid;
-      border-color: #555 transparent transparent transparent;
+.skill-badges {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  .skill-small {
+    display: inline-flex;
+    margin: 3px 6px 3px 0;
+    border: 1px solid var(--badge-black-bd);
+    background: var(--badge-black-bg);
+    padding: 3px;
+    border-radius: $box-border-radius;
+    picture {
+      display: inline-flex;
     }
   }
-
-  &:hover {
-    .tooltiptext {
-      visibility: visible;
-      opacity: 1;
-    }
+  .tech-text {
+    margin: 3px 6px 3px 0;
+    border: 1px solid var(--a-list-homepage-bd);
+    background: var(--badge-black-bg);
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    color: var(--color-faded);
+    font-family: monospace;
+    word-spacing: -3px;
   }
 }

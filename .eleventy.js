@@ -53,6 +53,18 @@ module.exports = function (eleventyConfig) {
   );
 
   switch (process.env.ELEVENTY_ENV) {
+    case "theming":
+      distPath = "_built";
+      eleventyConfig.addPlugin(require("./src/_11ty/optimize-html.js"), {
+        distPath: distPath,
+        devMode: true,
+      });
+      eleventyConfig.setDataDeepMerge(true);
+      eleventyConfig.ignores.add("notes/posts");
+      eleventyConfig.ignores.add("sample_posts");
+      eleventyConfig.ignores.add("notes/low-quality-posts");
+      break;
+
     case "full-no-opt":
       distPath = "_built";
       eleventyConfig.addPlugin(require("./src/_11ty/optimize-html.js"), {
@@ -74,7 +86,7 @@ module.exports = function (eleventyConfig) {
       eleventyConfig.addPlugin(require("./src/_11ty/optimize-html.js"));
       eleventyConfig.setDataDeepMerge(true);
       eleventyConfig.ignores.delete("notes/posts");
-      eleventyConfig.ignores.add("notes/sample_posts");
+      eleventyConfig.ignores.add("sample_posts");
       eleventyConfig.ignores.add("notes/low-quality-posts");
       eleventyConfig.addPlugin(localImages, {
         distPath: distPath,
@@ -333,6 +345,18 @@ module.exports = function (eleventyConfig) {
       '<sup><a href="' +
       url +
       '" rel="noopener noreferrer" target="_blank">[ref]</a></sup>'
+    );
+  });
+
+  // Using {% icon "time" %}
+  // Keys: time | danger | success | info | warning
+  eleventyConfig.addShortcode("icon", function (icon) {
+    return (
+      '<img width="25" height="25" class="keep-original" src="/img_src/icons/' +
+      icon +
+      '.svg" alt="' +
+      icon +
+      '" style="vertical-align: middle; margin-right: 5px;">'
     );
   });
 

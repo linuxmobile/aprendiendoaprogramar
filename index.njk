@@ -18,7 +18,7 @@ Hola, mi nombre es Braian, en redes sociales aparezco como __linuxmobile__. Soy 
 
     <div class="social">
       {% for item in social %}
-        <a class="no-effect" title="{{ item.name }}" href="{{ item.url }}" target="_blank">
+        <a class="no-effect tooltip-auto" data-title="{{ item.name }}" href="{{ item.url }}" target="_blank">
           <img class="keep-original" src="{{ item.icon }}" alt="{{ item.name }}" height="40" width="40">
         </a>
       {% endfor %}

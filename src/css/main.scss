@@ -28,7 +28,7 @@ $font-main: "Poppins", Arial, Helvetica, sans-serif;
 $font-main-var: "Poppins" var alt, Arial, Helvetica, sans-serif;
 $font-heading: "Recoleta", Arial, Helvetica, sans-serif;
 $font-code: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
-$font-size: 16px;
+$font-size: 1rem;
 $font-color: #eee;
 $font-color-light: #4b4b4b;
 $font-color-darker: #f6f6f6;
@@ -55,7 +55,7 @@ $grid-xxl: 1600px;
 $grid-w-normal: 900px;
 $grid-w-ex-normal: 1000px;
 $grid-toc: 1400px;
-$padding-lr: $font-size;
+$padding-lr: 16px;
 $margin-bottom: 1.5 * $font-size; // margin-bottom
 $margin-bottom-code: 1.1 * $margin-bottom; // for code blocks
 
@@ -83,12 +83,12 @@ $heading-heading-minus-margin: -0.5rem;
 $header-logo: 55px;
 
 // OTHERS
-$box-border-radius: 0.6rem;
+$box-border-radius: 0.5rem;
 $li-margin-bottom: 5px;
 
 // CODE
 $code-font-size: 0.9 * $font-size;
-$inside-padding: $font-size;
+$inside-padding: 16px;
 $pre-padding: $inside-padding;
 $code-bg: #2f3240;
 $code-bg-light: #fff;
@@ -111,6 +111,7 @@ $toc-title-bd: #555;
 $toc-title-bd-light: #ccc;
 $toc-appendix: #a2a2a2;
 $toc-appendix-light: #545454;
+$fixed-top: 70px; // change to the same number in main.js (anchor link)
 
 // BADGE
 $badge-reading: #9cfea1;
@@ -173,6 +174,7 @@ $bg-hs-box-light: rgba(255, 255, 255, 0.25);
 @import "./components/dark-light"; // dark / light mode
 @import "./components/font";
 @import "./components/main"; // init css
+@import "./components/tooltip";
 @import "./components/typography";
 @import "./components/heading";
 @import "./components/grid";

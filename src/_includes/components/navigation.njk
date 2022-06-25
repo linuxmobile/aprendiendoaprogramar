@@ -1,11 +1,12 @@
 <nav>
-  <div id="nav">
-    <a class="nav-item no-effect" href="{{ '/' | url }}">
-      <img class="keep-original" src="/img_src/nav/home.svg" alt="home" height="18" width="18">
-      <span>Home</span>
+  <div class="container wide" id="nav">
+    <a class="nav-item no-effect nav-avatar" href="{{ '/' | url }}">
+      <img class="keep-original" src="/img_src/avatar_memoji.webp" alt="Thi" height="40" width="40">
     </a>
-    <a class="nav-item no-effect" href="{{ '/about/' | url }}">
-      <img class="keep-original" src="/img_src/nav/about.svg" alt="about" height="15" width="15">
+    <a class="nav-hide-sm nav-item no-effect nav-text{% if page.url === '/' %} active{% endif %}" href="{{ '/' | url }}">
+      <span>Inicio</span>
+    </a>
+    <a class="nav-item no-effect nav-text{% if page.url === '/about/' %} active{% endif %}" href="{{ '/about/' | url }}">
       <span>Acerca</span>
     </a>
     <div id="nav-search" class="nav-search">
@@ -25,11 +26,19 @@
         </div>
       </div>
     </div>
-    <span id="toggle-dark-light" class="nav-item nav-dark-light no-effect" href="">
-      <img class="keep-original" src="/img_src/nav/moon.svg" alt="light-mode" height="20" width="20">
+    <span
+      class="nav-item nav-button-icon nav-dark-light no-effect scale-img-on-active tooltip-auto"
+      data-title="Dark Theme"
+      id="toggle-dark-light"
+      href="">
+      <img class="keep-original" src="/img_src/nav/moon.svg" alt="toggle themes" height="25" width="25">
     </span>
-    <a class="nav-item nav-github no-effect" href="https://github.com/linuxmobile" target="_blank">
-      <img class="keep-original" src="/img_src/nav/github.svg" alt="github" height="20" width="20">
+    <a
+      class="nav-hide-sm nav-item nav-button-icon nav-github no-effect scale-img-on-active tooltip-auto"
+      href="https://github.com/linuxmobile"
+      data-title="Mi Github"
+      target="_blank">
+      <img class="keep-original" src="/img_src/nav/github.svg" alt="github" height="25" width="25">
     </a>
   </div>
 
@@ -40,7 +49,11 @@
 </div>
 </nav>
 
+{{page.url}}
+
 {% set js %}
-  {% include "scripts/search.js" %}
+{% include "scripts/search.js" %}
 {% endset %}
-<script>{{ js | jsmin | safe }}</script>
+<script>
+{{ js | jsmin | safe }}
+</script> 

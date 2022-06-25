@@ -175,7 +175,7 @@ function offsetAnchor() {
   if (location.hash.length !== 0) {
     window.scrollTo({
       left: window.scrollX,
-      top: window.scrollY - 60,
+      top: window.scrollY - 70, // the same as main.scss/$fixed-top
       behavior: "smooth",
     });
   }
@@ -283,12 +283,14 @@ const addSelected2 = (ulRes, li) => {
           if (target === "_blank") {
             const span = document.createElement("span");
             span.setAttribute("class", "external-badge");
+            span.setAttribute("data-external", true);
             span.innerHTML = "external";
             h3.appendChild(span);
           }
           if (privatePost == true) {
             var spanPrivate = document.createElement("span");
             spanPrivate.setAttribute("class", "external-badge");
+            spanPrivate.setAttribute("data-private", true);
             spanPrivate.innerHTML = "private";
             h3.appendChild(spanPrivate);
           }
@@ -369,11 +371,11 @@ const addSelected2 = (ulRes, li) => {
 
 // Dark/Light toggle
 // -----------------------------------------
-const btn = document.getElementById("toggle-dark-light");
-let toggleIcon = btn.firstElementChild;
+const toggleThemeBtn = document.getElementById("toggle-dark-light");
+let toggleIcon = toggleThemeBtn.firstElementChild;
 
 const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-btn.onclick = function () {
+toggleThemeBtn.onclick = function () {
   if (prefersDarkScheme.matches) {
     document.body.classList.toggle("light-theme");
     var theme = document.body.classList.contains("light-theme")
@@ -392,8 +394,10 @@ btn.onclick = function () {
 const toggleIconFn = (theme) => {
   if (theme === "dark") {
     toggleIcon.src = "/img_src/nav/sun.svg";
+    toggleThemeBtn.setAttribute('data-title', 'Light Theme')
   } else {
     toggleIcon.src = "/img_src/nav/moon.svg";
+    toggleThemeBtn.setAttribute('data-title', 'Dark Theme')
   }
 };
 

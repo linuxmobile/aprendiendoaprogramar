@@ -1,0 +1,178 @@
+{% set pageUrlLength = page.url | length %}
+{% set waveType = 'gray' if containerBackgroundType == 'gray' else
+  'white' %}
+<header class="wave-border wave-border-{{ waveType }}">
+
+  {% include "components/navigation.njk" %}
+
+  <div class="header-container{% if customHeaderContainerClasses %} {{customHeaderContainerClasses}}{% endif %}">
+
+    {# layout post/page #}
+    {% if layout == 'post' or layout == 'page' %}
+      <div class="post-header">
+        <div class="header-logo post-layout{% if iconWhite %} icon-white{% endif %}">
+          {% if icon %}
+            {% if "/" in icon %}
+              <img class="keep-original" alt="{{ title }}" src="{{ icon }}" height="55" width="55">
+            {% else %}
+              <img class="keep-original" alt="{{ title }}" src="/img/header/{{ icon }}" height="55" width="55">
+            {% endif %}
+          {% else %}
+            <img class="keep-original" alt="{{ title }}" src="/img_src/nav/about.svg" height="55" width="55">
+          {% endif %}
+        </div>
+
+        {% block headerTitle %}
+          <h1>
+            {% if specialTitle %}
+              <span class="special-title">{{ specialTitle }}</span>
+            {% endif %}
+            {% if specialTitleImageUrl %}
+              <span class="special-title"><img width="36" height="36" src="{{ specialTitleImageUrl }}" class="keep-original" alt="hi" ></span>
+            {% endif %}
+            {{ title | safe }}
+            {% if lowQuality %}
+              <sup class="draft-badge">low-quality</sup>
+            {% elif notfull %}
+              <sup class="draft-badge">draft</sup>
+            {% endif %}
+          </h1>
+        {% endblock %}
+
+        {% if tags %}
+          <div id="more-info">
+            <div id="note-tag">
+              {% for tag in tags %}
+                {% if tag != "posts" and tag !== 'Blog' %}
+                  <a href="/tags/{{ tag | slug }}/">{{ tag }}</a>
+                {% endif %}
+                {% if tag == 'Blog' %}
+                  {% set blogItem = categories | getBlog %}
+                  <i class="{{ blogItem.fontello }} fontello-icon" style="color: {{ blogItem.color }};"></i>
+                  <a href="/blog/">{{ tag }}</a>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div id="last-modified">
+              Last modified {{ page.date | toDuration }}
+              /
+              <a href="https://github.com/linuxmobile/notes/edit/master/{{ page.inputPath | replace('notes/', '') }}">Editar en Github</a>
+            </div>
+          </div>
+        {% endif %}
+
+        {# page "index" #}
+        {% if page.url == '/' %}
+          <p class="intro">
+            Hola, soy simplemente un argentino intentando aprender. Me gusta aprender algo todos los días.
+            Estoy estudiando para ser un <b>Fullstack Developer</b>, en NUCBA. Desde chico, me apasiona
+            la <b>tecnología</b>, la <b>programación</b> y <b>linux</b>.
+          </p>
+          <div class="social">
+            {% for item in social %}
+              <a class="no-effect tooltip-auto" data-title="{{ item.name }}" href="{{ item.url }}" target="_blank">
+                <img class="keep-original" src="{{ item.icon }}" alt="{{ item.name }}" height="40" width="40">
+              </a>
+            {% endfor %}
+          </div>
+          {% if settings.look4job %}
+            <div class="job mb-1p5">
+              <span>Disponible para trabajar fulltime!</span>
+            </div>
+          {% endif %}
+          <p class="contact mt-0p5">
+            <a class="button blue no-effect" href="mailto:bdiez19@gmail.com">
+              {% if settings.look4job %}Contratame{% else %}Contacto{% endif %}
+            </a>
+            <a class="button black" href="{{ '/about/' | url }}">📋 Mi CV</a>
+            <a class="button black" href="/animes/">📚 Estoy viendo</a>
+            <a class="button black" href="https://linuxmobile.netlify.app/" target="_blank">🦄 linuxmobile.com</a>
+          </p>
+        {% endif %}
+
+        {% if page.url == '/about/' %}
+          <div class="d-flex d-flex-wrap">
+            <div class="intro">
+              <p>
+                Yo soy <b>Braian</b>, pero me dicen <i>linux</i>. Soy un argentino que quiere convertirse
+                en programador fullstack. Todo lo que he aprendido me gustaría plasmarlo acá. 
+                En estas notas vas a poder encontrar temas relacionados a la <b>tecnología</b>,
+                <b>programación</b>, <b>linux</b>, <n>y mucho más</n>.
+              </p>
+              <p>
+                En este sitio web, voy a documentar todo lo que sea posible. Si algo te ayudo, te agradecería
+                que me apoyaras para continuar con mi trabajo!
+              </p>
+            </div>
+
+            <div class="coordinate">
+              <ul>
+                <li>
+                  <span>From</span> Tres Arroyos</li>
+                <li>
+                  <span>Location</span> Buenos Aires, Argentina</li>
+                <li>
+                  <span>Github</span> github.com/linuxmobile</li>
+                <li>
+                  <span>LinkedIn</span> linkedin.com/in/braiandiez</li>
+                <li>
+                  <span>Email</span> bdiez19@gmail.com</li>
+              </ul>
+              {% if settings.look4job %}
+                <div class="job">
+                  <span>Disponible para trabajar!</span>
+                </div>
+              {% endif %}
+            </div>
+
+            <p class="contact">
+              <a class="button blue no-effect" href="mailto:bdiez19@gmail.com">
+                {% if settings.look4job %}Contratame{% else %}Contacto{% endif %}
+              </a>
+              <a class="button black" href="{{ '/' | url }}">🖊 Mis notas</a>
+              <a class="button black" href="/animes/">📚 Estoy viendo</a>
+              <a class="button black" href="https://glinuxmobile.netlify.app" target="_blank">🦄 linuxmobile.com</a>
+            </p>
+          </div>
+        {% endif %}
+
+      </div>
+      <!-- .post-header -->
+
+    {# layout blog #}
+    {% elif layout == 'blog' %}
+      <div class="blog-header">
+        {% if tags %}
+          <div class="blog-tags">
+            {% for tag in tags %}
+              {% if tag != "posts" and tag !== 'Blog' %}
+                  <a href="/tags/{{ tag | slug }}/">{{ tag }}</a>
+                {% endif %}
+                {% if tag == 'Blog' %}
+                  {% set blogItem = categories | getBlog %}
+                  <span>
+                    <i class="{{ blogItem.fontello }} fontello-icon" style="color: {{ blogItem.color }}; margin-right: -0.2em;"></i>
+                    <a href="/blog/">{{ tag }}</a>
+                  </span>
+                {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+        <h1 class="blog-title">{{ title | safe }}</h1>
+        {% if tags %}
+          <div class="blog-description">
+            {{ description }}
+          </div>
+        {% endif %}
+        <div class="blog-date">
+              Last updated {{ page.date | toDuration }}
+              /
+              <a href="https://github.com/linuxmobile/notes/edit/master/{{ page.inputPath | replace('notes/', '') }}">Editar en Github</a>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+  <!-- .header-container -->
+
+</header>

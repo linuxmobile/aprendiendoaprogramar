@@ -1,5 +1,6 @@
 ---
 layout: page
+containerBackgroundType: gray
 title: "Hola! Soy linux :3!"
 specialTitleImageUrl: "/img_src/wave.webp"
 description: Esto es un blog personal. Un lugar donde caen mis notas mas osadas!
@@ -9,50 +10,19 @@ icon: '/img_src/avatar_memoji.webp'
 date: Last Modified
 ---
 
-<header class="pt-0 wave-border wave-border-index">
-  <div class="header-container pt-0">
-
-{% markdown %}
-Hola, mi nombre es Braian, en redes sociales aparezco como __linuxmobile__. Soy el autor del blog [linuxmobile.netlify.app](https://linuxmobile.netlify.app). Me gustaría aprender algo nuevo todos los días. Actualmente estoy estudiando __Full Stack Developer__ en [NUCBA](https://nucba.com.ar/). En este "blog" vamos a encontrar las notas de las cosas que voy descubriendo. Relacionadas a la __programación__, __el desarrollo web__, y mucho más... {:.intro}
-{% endmarkdown %}
-
-    <div class="social">
-      {% for item in social %}
-        <a class="no-effect tooltip-auto" data-title="{{ item.name }}" href="{{ item.url }}" target="_blank">
-          <img class="keep-original" src="{{ item.icon }}" alt="{{ item.name }}" height="40" width="40">
-        </a>
-      {% endfor %}
-    </div>
-    {% if settings.look4job %}
-      <div class="job mb-1p5">
-        <span>Disponible para un trabajo Full-time!</span>
-      </div>
-    {% endif %}
-    <p class="contact mt-0p5">
-      <a class="button blue no-effect" href="mailto:bdiez19@gmail.com">
-        {% if settings.look4job %}Contrátame{% else %}Contacto{% endif %}
-      </a>
-      <a class="button black" href="{{ '/about/' | url }}">📋 Mi CV</a>
-      <a class="button black" href="/animes/">📚 Estoy viendo...</a>
-      <a class="button black" href="https://linuxmobile.netlify.app/" target="_blank">🦄 linuxmobile.com</a>
-    </p>
-
-  </div>
-</header>
-
 <div class="container wide d-flex d-flex-wrap">
   <div class="main-cats">
     {% for item in categories %}
 
       {# post outside 11ty .md files #}
-      {% set more_post = false %}
+      {% set morePosts = false %}
 
       {% set newPostListCat = [] %}
       {% for post in cat_ex_posts %}
         {% if not post.hide %}
           {% for tg in post.tags %}
             {% if tg == item.name %}
-              {% set more_post = true %}
+              {% set morePosts = true %}
               {% set singlePost = {
                 'title': post.title,
                 'url': post.url
@@ -72,22 +42,49 @@ Hola, mi nombre es Braian, en redes sociales aparezco como __linuxmobile__. Soy 
         {% endif %}
       {% endfor %}
 
-      {% if more_post %}
-        {% set more_post = newPostListCat %}
+      {% if morePosts %}
+        {% set morePosts = newPostListCat %}
       {% endif %}
 
       {% set postslist = collections[item.name] %}
       {% set lenlist = postslist | length %}
       {% if lenlist > 0 %}
         <div class="category-wrapper" name="{{ item.name | lower | trim | replace(" ", "-") }}">
-          <div class="category">
-            <h2 id="{{ item.name | lower | trim | replace(" ", "-") }}">
-              <i class="{{ item.fontello }} fontello-icon"></i>{{ item.name }}
-            </h2>
-            {% set customClass = 'list-homepage list-of-post' %}
-            {% set customIcon = true %}
-            {% include "components/postslist.njk" %}
-          </div>
+          {% if item.name == 'Blog' %}
+            <div class="blog">
+              <div class="h2-dots _big _no-dots">
+                <h2 id="{{ item.name | lower | trim | replace(" ", "-") }}">
+                  <i class="{{ item.fontello }} fontello-icon" style="color: {{item.color}};"></i>
+                  <span>{{ item.name }}</span>
+                  {% if postslist | length > 4 %}
+                    <a class="heading-more no-effect" href="/blog/">...more</a>
+                  {% endif %}
+                </h2>
+              </div>
+              {% set customClass = 'list-of-blog' %}
+              {% set customIcon = false %}
+              {% set sortBy = 'date' %}
+              {% set limitPosts = 4 %}
+              {% include "components/postsList.njk" %}
+            </div>
+
+            <div class="h2-dots _big _no-dots">
+              <h2 class="heading-notes">
+                <img alt="Note icon" src="/img_src/icons/notes.svg" width="30" height="30" class="keep-original" />
+                <span>Notas</span>
+              </h2>
+            </div>
+          {% else %}
+            <div class="category">
+              <h2 id="{{ item.name | lower | trim | replace(" ", "-") }}">
+                <i class="{{ item.fontello }} fontello-icon"></i>{{ item.name }}
+              </h2>
+              {% set hideBlogPosts = true %}
+              {% set customClass = 'list-homepage list-of-post' %}
+              {% set customIcon = true %}
+              {% include "components/postsList.njk" %}
+            </div>
+          {% endif %}
         </div>
       {% endif %}
     {% endfor %}
@@ -97,14 +94,14 @@ Hola, mi nombre es Braian, en redes sociales aparezco como __linuxmobile__. Soy 
     {% include "components/toggle-posts-buttons.njk" %}
 
     <div class="toc-index" id="toc-index">
-      <h3>Notes by topics</h3>
+      <h3>Notas por temas</h3>
       <ul class="toc-js toc-common">
         {% for item in categories %}
           {% set postslist = collections[item.name] %}
           {% set lenlist = postslist | length %}
           {% if lenlist > 0 %}
             <li name="toc-li-{{ item.name | lower | trim | replace(" ", "-") }}">
-              <i class="{{ item.fontello }} fontello-icon"></i>
+              <i{% if item.name == 'Blog' %} style="color: {{item.color}};"{% endif %} class="{{ item.fontello }} fontello-icon"></i>
               <a href="#{{ item.name | lower | trim | replace(" ", "-") }}">{{ item.name }}</a>
             </li>
           {% endif %}

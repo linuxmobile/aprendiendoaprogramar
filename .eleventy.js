@@ -7,6 +7,7 @@ const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const elasticlunr = require("elasticlunr");
 const { minify } = require("terser");
+const _ = require("lodash");
 
 const markdownIt = require("markdown-it");
 var markdownItp = require("markdown-it")();
@@ -23,6 +24,7 @@ var dataDir = thiDataDir;
 var distPath;
 
 const categories = require("./" + thiDataDir + "/categories.json");
+const waveColors = require("./src/_data/wave_colors");
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss);
@@ -34,7 +36,7 @@ module.exports = function (eleventyConfig) {
       tags: ["h2", "h3"],
       wrapper: "div",
       wrapperClass: "toc toc-common toc-js",
-      headingText: "En esta nota",
+      headingText: "In this note",
       headingTag: "div",
     }
   );
@@ -61,7 +63,12 @@ module.exports = function (eleventyConfig) {
       });
       eleventyConfig.setDataDeepMerge(true);
       eleventyConfig.ignores.add("notes/posts");
-      eleventyConfig.ignores.add("sample_posts");
+
+      eleventyConfig.ignores.delete("notes/blog"); // ###Thi
+      eleventyConfig.ignores.delete("notes/blog_wip");
+      eleventyConfig.ignores.delete("sample_posts");
+
+      eleventyConfig.ignores.delete("notes/fixed_notes");
       eleventyConfig.ignores.add("notes/low-quality-posts");
       break;
 
@@ -73,20 +80,26 @@ module.exports = function (eleventyConfig) {
       });
       eleventyConfig.setDataDeepMerge(true);
       eleventyConfig.ignores.delete("notes/posts");
-      eleventyConfig.ignores.add("notes/sample_posts");
+      eleventyConfig.ignores.delete("notes/blog");
+      eleventyConfig.ignores.add("sample_posts");
+      eleventyConfig.ignores.add("notes/blog_wip");
       eleventyConfig.ignores.delete("notes/low-quality-posts");
+      eleventyConfig.ignores.delete("notes/fixed_notes");
       break;
 
-    default:
+    default: // take too long to build
       // full-opt
       distPath = "_site";
-      eleventyConfig.addPlugin(require("./src/_11ty/img-dim.js")); // take too long to build
+      eleventyConfig.addPlugin(require("./src/_11ty/img-dim.js"));
       eleventyConfig.addPlugin(require("./src/_11ty/json-ld.js"));
       eleventyConfig.addPlugin(require("./src/_11ty/apply-csp.js"));
       eleventyConfig.addPlugin(require("./src/_11ty/optimize-html.js"));
       eleventyConfig.setDataDeepMerge(true);
       eleventyConfig.ignores.delete("notes/posts");
+      eleventyConfig.ignores.delete("notes/blog");
+      eleventyConfig.ignores.delete("notes/fixed_notes");
       eleventyConfig.ignores.add("sample_posts");
+      eleventyConfig.ignores.add("notes/blog_wip");
       eleventyConfig.ignores.add("notes/low-quality-posts");
       eleventyConfig.addPlugin(localImages, {
         distPath: distPath,
@@ -100,6 +113,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addLayoutAlias("post", "layouts/post.njk");
   eleventyConfig.addLayoutAlias("page", "layouts/page.njk");
   eleventyConfig.addLayoutAlias("base", "layouts/base.njk");
+  eleventyConfig.addLayoutAlias("blog", "layouts/blog.njk");
 
   eleventyConfig.addNunjucksAsyncFilter(
     "addHash",
@@ -137,7 +151,9 @@ module.exports = function (eleventyConfig) {
   });
 
   // Compute duration from date
-  eleventyConfig.addFilter("toDuration", (dateObj) => {
+  eleventyConfig.addFilter("toDuration", (inputDateObj) => {
+    const dateObj =
+      typeof inputDateObj === "string" ? new Date(inputDateObj) : inputDateObj;
     const durationInDays =
       (new Date().getTime() - dateObj.getTime()) / (1000 * 60 * 60 * 24);
     if (durationInDays < 1) {
@@ -153,7 +169,9 @@ module.exports = function (eleventyConfig) {
     }
   });
 
-  eleventyConfig.addFilter("toDurationDays", (dateObj) => {
+  eleventyConfig.addFilter("toDurationDays", (inputDateObj) => {
+    const dateObj =
+      typeof inputDateObj === "string" ? new Date(inputDateObj) : inputDateObj;
     const durationInDays =
       (new Date().getTime() - dateObj.getTime()) / (1000 * 60 * 60 * 24);
     return Math.round(durationInDays);
@@ -167,8 +185,24 @@ module.exports = function (eleventyConfig) {
     return dt.toISO();
   });
 
+  eleventyConfig.addFilter("toDate", (inputString) => {
+    return new Date(inputString);
+  });
+
+  eleventyConfig.addFilter("isBlog", (inputArray) => {
+    return inputArray ? inputArray.includes("Blog") : false;
+  });
+
+  eleventyConfig.addFilter("sitemapDateTimeString", (dateObj) => {
+    const dt = DateTime.fromJSDate(dateObj, { zone: "utc" });
+    if (!dt.isValid) {
+      return "";
+    }
+    return dt.toISO();
+  });
+
   // For adding new key-value to a dictionary
-  // First used in postslist.njk
+  // First used in postsList.njk
   eleventyConfig.addFilter("setAttribute", function (dictionary, key, value) {
     dictionary[key] = value;
     return dictionary;
@@ -179,6 +213,39 @@ module.exports = function (eleventyConfig) {
     return techArray.find((tech) => tech.id === techId);
   });
 
+  // Get random colors (from a predefined set) for bottom-wave in blog cards
+  eleventyConfig.addFilter("getRandomColor", function (name, postIdx, idx) {
+    // Get the same number for each name -> colors are fixed for each name
+    function getHash(input, numColors) {
+      var hash = 0,
+        len = input.length;
+      for (var i = 0; i < len; i++) {
+        hash = (hash << 5) - hash + input.charCodeAt(i);
+        hash |= 0; // to 32bit integer
+      }
+      return Math.abs(hash) % numColors;
+    }
+    const color = waveColors[getHash(name, waveColors.length)];
+
+    // Based on index -> new posts make old posts' colors change
+    // function getHash(input, numColors) {
+    //   return input % numColors;
+    // }
+    // const color = waveColors[getHash(postIdx, waveColors.length)];
+
+
+    switch (idx) {
+      case 0:
+        return `rgba(${color}, 0.1)`;
+      case 1:
+        return `rgba(${color}, 0.05)`;
+      case 2:
+        return `rgba(${color}, 0.01)`;
+      case 3:
+        return `rgba(${color}, 0.005)`;
+    }
+  });
+
   // Used in /pages/search-index.json
   eleventyConfig.addFilter("search", (collection) => {
     var index = elasticlunr(function () {
@@ -186,6 +253,8 @@ module.exports = function (eleventyConfig) {
       this.addField("keywords");
       this.addField("tags");
       this.addField("cat");
+      this.addField("icon");
+      this.addField("iconColor");
       this.setRef("id");
     });
     collection.forEach((page) => {
@@ -194,9 +263,17 @@ module.exports = function (eleventyConfig) {
         title: page.title,
         keywords: page.keywords,
         tags: page.tags,
-        cat: page.cat
+        cat: page.cat,
+        icon: page.cat
           ? categories.find((item) => item.name === page.cat).fontello
           : "icon-tags",
+        iconColor: page.cat
+          ? _.get(
+              categories.find((item) => item.name === page.cat),
+              "color",
+              "#fff"
+            )
+          : "#fff",
         target: page.target,
         privatePost: page.privatePost,
         //"content": page.templateContent,
@@ -205,11 +282,14 @@ module.exports = function (eleventyConfig) {
     return index.toJSON();
   });
 
+  eleventyConfig.addFilter("getBlog", (collection) => {
+    return collection.filter((col) => col.name === "Blog")[0];
+  });
+
   // Get the first `n` elements of a collection
   eleventyConfig.addFilter("head", (array, n) => {
-    if (n < 0) {
-      return array.slice(n);
-    }
+    if (!n) return array;
+    if (n < 0) return array.slice(n);
     return array.slice(0, n);
   });
 
@@ -218,6 +298,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "notes/img": "img" });
   eleventyConfig.addPassthroughCopy({ "src/img": "img_src" });
   eleventyConfig.addPassthroughCopy({ "notes/files": "files" });
+  eleventyConfig.addPassthroughCopy({ "notes/img_blog": "img_blog" });
   eleventyConfig.addPassthroughCopy("src/css");
   eleventyConfig.addPassthroughCopy("src/js");
   eleventyConfig.addPassthroughCopy({ "src/fonts": "fonts" }); // Copy `src/fonts` to `${distPath}/fonts`
@@ -349,7 +430,7 @@ module.exports = function (eleventyConfig) {
   });
 
   // Using {% icon "time" %}
-  // Keys: time | danger | success | info | warning
+  // Keys: time | danger | success | info | warning | idea | draft
   eleventyConfig.addShortcode("icon", function (icon) {
     return (
       '<img width="25" height="25" class="keep-original" src="/img_src/icons/' +

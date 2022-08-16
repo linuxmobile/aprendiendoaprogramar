@@ -3,7 +3,7 @@
 echo "#### 2. Start copying aprendiendoaprogramar/_site to _site/_site/"
 rm -rf ../_site/_site
 mkdir ../_site/_site
-cp -Rf _site/* ../_site/_site
+cp -Rf _site/*  ../_site/_site
 echo "End copying"
 echo "#### 3. Go to _site folder"
 cd ../_site/

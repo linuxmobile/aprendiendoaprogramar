@@ -54,11 +54,12 @@ $grid-lg: 992px;
 $grid-xl: 1200px;
 $grid-xxl: 1600px;
 $grid-w-normal: 900px;
-$grid-w-ex-normal: 1000px;
+$grid-w-ex-normal: 1200px;
 $grid-toc: 1400px;
 $padding-lr: 16px;
 $margin-bottom: 1.5 * $font-size; // margin-bottom
 $margin-bottom-code: 1.1 * $margin-bottom; // for code blocks
+$padding-margin: 2rem;
 
 // HEADINGs
 $heading-font: $font-heading;
@@ -163,9 +164,12 @@ $alert-danger-bg-light: #ff818e30;
 $alert-danger-bd-light: #ff818e;
 
 $alert-warning-bg: #f0ac1f24;
-$alert-warning-bd: #f0ac1f;
 $alert-warning-bg-light: #ffcd0030;
-$alert-warning-bd-light: #ffcd00;
+$alert-warning-bd: #ffc04882;
+$alert-warning-bd-light: #ffc048;
+
+$alert-idea-bd: #ffc00870;
+$alert-idea-bd-light: #ffc008;
 
 $bg-hs-box: rgba(255, 255, 255, 0.05);
 $bg-hs-box-light: rgba(255, 255, 255, 0.25);

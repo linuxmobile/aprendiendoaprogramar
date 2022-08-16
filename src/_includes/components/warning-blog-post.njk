@@ -1,0 +1,25 @@
+{% set lastUpdatedDays = page.date | toDurationDays %}
+{% if lastUpdatedDays > settings.outdatedTime and not noOutdated %}
+  <div class="alert warning">
+    <div class='_icon'>
+      <img width='22' height='22' class='keep-original' src='/img_src/icons/time.svg' alt='Danger icon'>
+    </div>
+    <div>La última modificación de este post fue alrededor de <strong>{{ page.date | toDuration }}</strong>, alguna información puede estar desactualizada!</div>
+  </div>
+{% endif %}
+
+{% if lowQuality %}
+  <div class="alert danger">
+    <div class='_icon'>
+      <img width='22' height='22' class='keep-original' src='/img_src/icons/danger.svg' alt='Danger icon'>
+    </div>
+    <div>Esta es una nota con "baja calidad", leela bajo tu propio riesgo! </div>
+  </div>
+{% elif notfull %}
+  <div class="alert warning">
+    <div class='_icon'>
+      <img width='22' height='22' class='keep-original' src='/img_src/icons/draft.svg' alt='Danger icon'>
+    </div>
+    <div>Este es un borrador. El contenido puede no estar completo, que no se entienda bien o que su calidad sea bastante baja!</div>
+  </div>
+{% endif %}

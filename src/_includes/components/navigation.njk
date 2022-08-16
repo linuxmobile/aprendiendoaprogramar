@@ -11,7 +11,7 @@
     </a>
     {% for item in categories %}
       {% if item.name == 'Blog' %}
-        <a class="nav-item no-effect nav-text{% if page.url == '/blog/' %} active{% endif %}" href="{{ '/blog/' | url }}">
+        <a class="nav-hide-sm nav-item no-effect nav-text{% if page.url == '/blog/' %} active{% endif %}" href="{{ '/blog/' | url }}">
           <i class="{{ item.fontello }} fontello-icon" style="color: {{item.color}};"></i>
           <span>{{ item.name }}</span>
         </a>
@@ -19,6 +19,7 @@
     {% endfor %}
     <div id="nav-search" class="nav-search">
       <form>
+      <span class="back-slash">/</span>
         <input id="nav-search__input"
 							 class="nav-search__input"
 							 type="search"
@@ -35,14 +36,14 @@
       </div>
     </div>
     <span
-      class="nav-item nav-button-icon nav-dark-light no-effect scale-img-on-active tooltip-auto"
+      class="nav-hide-md nav-item nav-button-icon nav-dark-light no-effect scale-img-on-active tooltip-auto"
       data-title="Dark Theme"
       id="toggle-dark-light"
       href="">
       <img class="keep-original" src="/img_src/nav/moon.svg" alt="toggle themes" height="25" width="25">
     </span>
     <a
-      class="nav-hide-sm nav-item nav-button-icon nav-github no-effect scale-img-on-active tooltip-auto"
+      class="nav-item nav-button-icon nav-github no-effect scale-img-on-active tooltip-auto"
       href="https://github.com/linuxmobile"
       data-title="Mi Github"
       target="_blank">

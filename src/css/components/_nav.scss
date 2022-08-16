@@ -101,7 +101,7 @@ nav {
         }
         &.active {
           @include screen-sm-up {
-            background: #282a36;
+            background: #1f1d2e;
             color: #fff;
           }
         }
@@ -131,7 +131,7 @@ nav {
 
     .nav-search {
       display: block;
-      background: #282a36;
+      background: #1f1d2e;
       border-radius: 0.5rem;
       width: 100%;
       position: relative;

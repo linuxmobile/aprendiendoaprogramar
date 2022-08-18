@@ -21,6 +21,14 @@ h4 > code {
 
 *:not(pre) > code {
   @include code-inline();
+
+  &.no-bg {
+    background: none;
+  }
+
+  &.no-border {
+    border: none;
+  }
 }
 
 h2,

@@ -1,22 +1,22 @@
 // COLORS
-$color-background: #282a36;
-$color-header-background: #1c1f2e;
+$color-background: #1f1d2e;
+$color-header-background: #191724;
 $color-background-light: #f6f6f6;
 $color-background-post: $color-background;
-$color-background-post-light: #fff;
+$color-background-post-light: #f6f6f6;
 $color-current-line: #44475a;
 $color-selection: #44475a;
-$color-foreground: #f8f8f2;
-$color-blue: #8cc8ff;
-$color-blue-light: #4386c3;
-$color-green: #86f7a2;
-$color-green-light: #0ab534;
-$color-pink: #ff79c6;
-$color-red: #ff5555;
-$color-red-dark: #ff5555; // a little strange here, I know!
-$color-yellow: #ffd479;
-$color-yellow-light: #ffc342;
-$color-bg-nav: #35373c;
+$color-foreground: #e0def4;
+$color-blue: #3e8fb0;
+$color-blue-light: #286983;
+$color-green: #9ccfd8;
+$color-green-light: #56949f;
+$color-pink: #c4a7e7;
+$color-red: #eb6f92;
+$color-red-dark: #b4637a; // a little strange here, I know!
+$color-yellow: #f6c177;
+$color-yellow-light: #ea9d34;
+$color-bg-nav: #26233a;
 $color-invert: #fff;
 $color-invert-light: #000;
 $color-faded: #bbb;
@@ -93,7 +93,7 @@ $bg-comment-container-light: #e0e5fb73;
 $code-font-size: 0.9 * $font-size;
 $inside-padding: 16px;
 $pre-padding: $inside-padding;
-$code-bg: #2f3240;
+$code-bg: #191724;
 $code-bg-light: #fff;
 $code-bd: #3b3e54;
 $code-bd-light: #e4e2e2;
@@ -129,11 +129,11 @@ $a-list-homepage-bd: rgba(255, 255, 255, 0.14);
 $a-list-homepage-bd-light: #cacaca;
 $filter-invert: invert(0);
 $filter-invert-light: invert(1);
-$badge-black-bg: #343642;
+$badge-black-bg: #26233a;
 $badge-black-bg-light: #f3f3f3;
 $badge-black-bd: #444;
 $badge-black-bd-light: #ddd;
-$table-bg: #2f3240;
+$table-bg: #191724;
 $table-bg-light: #e8e8e8;
 $badge-green: #009023;
 $badge-green-light: $color-green-light;
@@ -179,7 +179,7 @@ $bg-hs-box: rgba(255, 255, 255, 0.05);
 $bg-hs-box-light: rgba(255, 255, 255, 0.25);
 
 // BLOG
-$bg-blog-card: #3c4051;
+$bg-blog-card: #26233a;
 $bg-blog-card-light: $code-bg-light;
 $post-gap: 1.5rem;
 $min-blog-card-width: 250px;

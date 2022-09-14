@@ -5,6 +5,8 @@ icon: notes.svg
 permalink: /about-the-notes/
 ---
 
+👉 **Blog**: ["Blog" vs "Notes" on this site?](/blog-vs-note/)
+
 Algunos Facts sobre las notas:
 
 {:.indent}

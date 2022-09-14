@@ -147,19 +147,24 @@
           <div class="blog-tags">
             {% for tag in tags %}
               {% if tag != "posts" and tag !== 'Blog' %}
-                  <a href="/tags/{{ tag | slug }}/">{{ tag }}</a>
-                {% endif %}
-                {% if tag == 'Blog' %}
-                  {% set blogItem = categories | getBlog %}
-                  <span class="blog-tag">
-                    <i class="{{ blogItem.fontello }} fontello-icon" style="color: {{ blogItem.color }}; margin-right: -0.2em;"></i>
-                    <a href="/blog/">{{ tag }}</a>
-                  </span>
-                {% endif %}
+                <a href="/tags/{{ tag | slug }}/">{{ tag }}</a>
+              {% endif %}
+              {% if tag == 'Blog' %}
+                {% set blogItem = categories | getBlog %}
+                <span class="blog-tag">
+                  <i class="{{ blogItem.fontello }} fontello-icon" style="color: {{ blogItem.color }}; margin-right: -0.2em;"></i>
+                  <a href="/blog/">{{ tag }}</a>
+                </span>
+              {% endif %}
             {% endfor %}
           </div>
         {% endif %}
-        <h1 class="blog-title">{{ title | safe }}</h1>
+        <h1 class="blog-title">
+          {{ title | safe }}
+          {% if part %}
+            <span class="post-part">PART {{ part }}</span>
+          {% endif %}
+        </h1>
         {% if tags %}
           <div class="blog-description">
             {{ description }}
@@ -170,6 +175,20 @@
               /
               <a href="https://github.com/linuxmobile/notes/edit/master/{{ page.inputPath | replace('notes/', '') }}">Editar en Github</a>
         </div>
+        {% if basePartUrl %}
+          {% set singleSeries = series | getSeries(basePartUrl) %}
+          <div class="part-series-container">
+            {% for idx in range(0, singleSeries.parts) %}
+              <a
+                href="{% if idx+1 === part %}javascript:void(0){% else %}/{{ basePartUrl }}-{{ idx + 1 }}/{% endif %}"
+                class="part-tag no-effect{% if idx + 1 > singleSeries.finished %} tooltip-auto disabled{% endif %}{% if idx + 1 === part %} tooltip-auto{% endif %}"
+                data-title="{% if idx + 1 > singleSeries.finished %}coming soon{% elif idx + 1 === part %}current post{% endif %}"
+              >
+                PART {{ idx + 1 }}
+              </a>
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
     {% endif %}
 

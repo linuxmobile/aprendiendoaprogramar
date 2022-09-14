@@ -17,6 +17,8 @@ permalink: "{{ page.fileSlug }}/"
         {{ content | safe }}
       {% endif %}
     </div>
+    
+    {% include "components/comment.njk" %}
 
     <script type="application/ld+json">
       {

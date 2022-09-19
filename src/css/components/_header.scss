@@ -45,7 +45,7 @@ header nav {
   .part-tag {
     display: block;
     padding: 2px 10px;
-    background: #d9fbff;
+    background: #fff;
     color: #3d2e2e;
     border-radius: 5px;
     white-space: nowrap;
@@ -63,7 +63,7 @@ header nav {
     }
     &:not(.current):not(.disabled):hover {
       border: none;
-      background: #adeef6;
+      background: $color-yellow;
       color: #222;
     }
   }

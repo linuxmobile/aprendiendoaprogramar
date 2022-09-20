@@ -18,4 +18,8 @@ echo "3️⃣ 5. Merging dev to prod..."
 git push . HEAD:prod
 echo "🚀 6. Updating prod & trigger build on netlify..."
 git push origin prod
+echo "4️⃣ Merging prod to dev..."
+git push . HEAD:main
+echo "🔙 Back to dev"
+git checkout main
 echo "✅ Done!"

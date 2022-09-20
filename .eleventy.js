@@ -164,11 +164,11 @@ module.exports = function (eleventyConfig) {
     const durationInDays =
       (new Date().getTime() - dateObj.getTime()) / (1000 * 60 * 60 * 24);
     if (durationInDays < 1) {
-      return "today";
+      return "hoy";
     } else if (durationInDays < 2) {
-      return "yesterday";
+      return "ayer";
     } else if (durationInDays < 30) {
-      return Math.round(durationInDays) + " days ago";
+      return Math.round(durationInDays) + " días";
     } else if (durationInDays < 365) {
       const numMonths = Math.round(durationInDays / 30);
       return `${numMonths} month${numMonths > 1 ? "s" : ""} ago`;

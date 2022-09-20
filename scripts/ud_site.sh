@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "1️⃣ 1. Updating notes..."
-cd ../notes
+cd notes
 git add .
 git commit -m "Updated: `date +'%Y-%m-%d %H:%M:%S'`"
 git push
@@ -15,7 +15,7 @@ git push
 echo "⏰ 4. Wait 3 seconds..."
 sleep 3
 echo "3️⃣ 5. Merging dev to prod..."
-git push . head:prod
+git push . HEAD:prod
 echo "🚀 6. Updating prod & trigger build on netlify..."
 git push origin prod
 echo "✅ Done!"

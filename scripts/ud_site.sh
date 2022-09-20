@@ -1,13 +1,13 @@
 #!/bin/bash
 echo "1️⃣ 1. Updating notes..."
-cd notes
+cd notesData
 git add .
 git commit -m "Updated: `date +'%Y-%m-%d %H:%M:%S'`"
 git push
 echo "⏰ 2. Wait 3 seconds..."
 sleep 3
 echo "2️⃣ 3. Updating submodules & current changes..."
-cd ../aprendiendoaprogramar
+cd ..
 git submodule update --remote
 git add .
 git commit -m "Updated: `date +'%Y-%m-%d %H:%M:%S'`"

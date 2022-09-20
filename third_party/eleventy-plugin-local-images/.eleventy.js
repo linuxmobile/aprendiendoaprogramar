@@ -5,7 +5,7 @@ const fetch = require("node-fetch");
 const sh = require("shorthash");
 const fileType = require("file-type");
 // const settings = require("../../src/_data/settings.json"); // src/_data
-const settings = require("../../notes/_data/settings.json"); // notes/_data
+const settings = require("../../notesData/_data/settings.json"); // notes/_data
 
 let config = { distPath: "_site", verbose: false, attribute: "src" };
 

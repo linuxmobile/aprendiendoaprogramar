@@ -21,7 +21,7 @@
 
 const { JSDOM } = require("jsdom");
 // const BASE_URL = require("../_data/settings.json").url;
-const BASE_URL = require("../../notesData/_data/settings.json");
+const BASE_URL = require("../../notes/_data/settings.json");
 
 /**
  * Validate json-ld being valid JSON and add the document images to the JSON.

@@ -15,11 +15,11 @@ git push
 echo "⏰ 4. Wait 3 seconds..."
 sleep 3
 echo "3️⃣ 5. Merging dev to prod..."
-git push . HEAD:prod
+git push . HEAD:prod --force
 echo "🚀 6. Updating prod & trigger build on netlify..."
 git push origin prod
 echo "4️⃣ Merging prod to dev..."
-git push . HEAD:main
+git push . HEAD:main --force
 echo "🔙 Back to dev"
 git checkout main
 echo "✅ Done!"

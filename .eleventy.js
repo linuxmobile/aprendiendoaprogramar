@@ -7,24 +7,23 @@ const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const elasticlunr = require("elasticlunr");
 const { minify } = require("terser");
-const _ = require("lodash");
-
 const markdownIt = require("markdown-it");
 var markdownItp = require("markdown-it")();
 const mdItContainer = require("markdown-it-container");
 const tm = require("./third_party/markdown-it-texmath"); // copied from github:dinhanhthi/markdown-it-texmath
 const anchor = require("markdown-it-anchor");
+const { get, remove } = require("lodash");
 
 const localImages = require("./third_party/eleventy-plugin-local-images/.eleventy.js");
 const CleanCSS = require("clean-css");
 
 const thiDataDir = "notes/_data";
-// const defaultDataDir = "src/_data";
 var dataDir = thiDataDir;
 var distPath;
 
 const categories = require("./" + thiDataDir + "/categories.json");
 const waveColors = require("./src/_data/wave_colors");
+const { convertDate } = require("./notes/_data/helpers");
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss);
@@ -63,14 +62,12 @@ module.exports = function (eleventyConfig) {
         devMode: true,
       });
       eleventyConfig.setDataDeepMerge(true);
-      eleventyConfig.ignores.add("notes");
-      // notesData
-      eleventyConfig.ignores.add("notesData/posts");
-      eleventyConfig.ignores.delete("notesData/blog");
-      eleventyConfig.ignores.delete("notesData/blog_wip");
-      eleventyConfig.ignores.delete("notesData/posts_wip");
-      eleventyConfig.ignores.delete("notesData/fixed_notes");
-      eleventyConfig.ignores.add("notesData/low-quality-posts");
+      eleventyConfig.ignores.delete("sample_posts");
+      eleventyConfig.ignores.add("notes/posts");
+      eleventyConfig.ignores.delete("notes/blog");
+      eleventyConfig.ignores.delete("notes/blog_wip");
+      eleventyConfig.ignores.delete("notes/posts_wip");
+      eleventyConfig.ignores.delete("notes/fixed_notes");
       break;
 
     case "full-no-opt":
@@ -81,23 +78,37 @@ module.exports = function (eleventyConfig) {
       });
       eleventyConfig.setDataDeepMerge(true);
       eleventyConfig.ignores.add("sample_posts");
-      eleventyConfig.ignores.add("notes");
-      // notesData
-      eleventyConfig.ignores.delete("notesData/posts");
-      eleventyConfig.ignores.delete("notesData/blog");
-      eleventyConfig.ignores.add("notesData/blog_wip");
-      eleventyConfig.ignores.add("notesData/posts_wip");
-      eleventyConfig.ignores.delete("notesData/low-quality-posts");
-      eleventyConfig.ignores.delete("notesData/fixed_notes");
+      eleventyConfig.ignores.delete("notes/posts");
+      eleventyConfig.ignores.delete("notes/blog");
+      eleventyConfig.ignores.delete("notes/blog_wip");
+      eleventyConfig.ignores.delete("notes/posts_wip");
+      eleventyConfig.ignores.delete("notes/fixed_notes");
       break;
 
-      default: // take longer to build, but optimize the output
-      // full-opt
+    case "netlify": // Used for building on Netlify (not used now)
       distPath = "_site";
-      
-      // Comment below if the build is too slow
-      // eleventyConfig.addPlugin(require("./src/_11ty/img-dim.js"));
+      eleventyConfig.addPlugin(require("./src/_11ty/json-ld.js"));
+      eleventyConfig.addPlugin(require("./src/_11ty/apply-csp.js"));
+      eleventyConfig.addPlugin(require("./src/_11ty/optimize-html.js"));
+      eleventyConfig.setDataDeepMerge(true);
+      eleventyConfig.ignores.delete("notes/posts");
+      eleventyConfig.ignores.delete("notes/blog");
+      eleventyConfig.ignores.delete("notes/fixed_notes");
+      eleventyConfig.ignores.add("sample_posts");
+      eleventyConfig.ignores.delete("notes/blog_wip");
+      eleventyConfig.ignores.delete("notes/posts_wip");
+      // notesData
+      eleventyConfig.ignores.add("notesData");
+      eleventyConfig.addPlugin(localImages, {
+        distPath: distPath,
+        assetPath: "/img/remote",
+        selector:
+          "img,amp-img,amp-video,meta[property='og:image'],meta[name='twitter:image'],amp-story",
+        verbose: false,
+      });
 
+    default: // used to build locally before deploying
+      distPath = "_site";
       eleventyConfig.addPlugin(require("./src/_11ty/json-ld.js"));
       eleventyConfig.addPlugin(require("./src/_11ty/apply-csp.js"));
       eleventyConfig.addPlugin(require("./src/_11ty/optimize-html.js"));
@@ -108,15 +119,16 @@ module.exports = function (eleventyConfig) {
       eleventyConfig.ignores.add("sample_posts");
       eleventyConfig.ignores.add("notes/blog_wip");
       eleventyConfig.ignores.add("notes/posts_wip");
-      eleventyConfig.ignores.add("notes/low-quality-posts");
-      // notesData
-      eleventyConfig.ignores.add("notesData");
       eleventyConfig.addPlugin(localImages, {
         distPath: distPath,
         assetPath: "/img/remote",
         selector:
           "img,amp-img,amp-video,meta[property='og:image'],meta[name='twitter:image'],amp-story",
         verbose: false,
+      });
+      eleventyConfig.addPlugin(require("./src/_11ty/optimize-html.js"), {
+        distPath: distPath,
+        devMode: true,
       });
   }
 
@@ -164,21 +176,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("toDuration", (inputDateObj) => {
     const dateObj =
       typeof inputDateObj === "string" ? new Date(inputDateObj) : inputDateObj;
-    const durationInDays =
-      (new Date().getTime() - dateObj.getTime()) / (1000 * 60 * 60 * 24);
-    if (durationInDays < 1) {
-      return "hoy";
-    } else if (durationInDays < 2) {
-      return "ayer";
-    } else if (durationInDays < 30) {
-      return Math.round(durationInDays) + " días";
-    } else if (durationInDays < 365) {
-      const numMonths = Math.round(durationInDays / 30);
-      return `${numMonths} month${numMonths > 1 ? "s" : ""} ago`;
-    } else {
-      const numYears = Math.round(durationInDays / 365);
-      return `${numYears} year${numYears > 1 ? "s" : ""} ago`;
-    }
+    return convertDate(dateObj, "upToDay");
   });
 
   eleventyConfig.addFilter("toDurationDays", (inputDateObj) => {
@@ -201,8 +199,11 @@ module.exports = function (eleventyConfig) {
     return new Date(inputString);
   });
 
-  eleventyConfig.addFilter("isBlog", (inputArray) => {
-    return inputArray ? inputArray.includes("Blog") : false;
+  eleventyConfig.addFilter("countSpecialPosts", (postList) => {
+    const numDrafts = postList.filter((post) => post.notfull).length;
+    const numPrivate = postList.filter((post) => post.private).length;
+    const numOutside = postList.filter((post) => post.external).length;
+    return { numDrafts, numPrivate, numOutside };
   });
 
   eleventyConfig.addFilter("sitemapDateTimeString", (dateObj) => {
@@ -213,22 +214,176 @@ module.exports = function (eleventyConfig) {
     return dt.toISO();
   });
 
-  // For adding new key-value to a dictionary
-  // First used in postsList.njk
-  eleventyConfig.addFilter("setAttribute", function (dictionary, key, value) {
-    dictionary[key] = value;
-    return dictionary;
+  /**
+   * Normalize internal posts
+   * - Remove all "posts" from the tags
+   * - Remove all .data from the posts
+   * @param {Array} posts - list of posts
+   * @param {Object} options - options
+   * @param {boolean} options.debug - Activate the debug mode
+   * @param {string} options.debugSource - Source of the debug
+   * @returns {Array} - list of normalized posts
+   */
+  eleventyConfig.addFilter("normalizePosts", (posts, options) => {
+    if (options?.debug) console.log("🐝 Called from: ", options?.debugSource);
+    const newPosts = [];
+    if (posts && posts.length) {
+      for (const post of posts) {
+        const newPost = { ...post };
+        if (post.data) {
+          for (const key of Object.keys(post.data)) {
+            newPost[key] = post.data[key];
+          }
+          delete newPost.data;
+        }
+        if (newPost?.tags?.includes("posts"))
+          newPost.tags = newPost?.tags?.filter((tag) => tag !== "posts");
+        newPosts.push(newPost);
+      }
+    }
+    if (options?.debug) {
+      console.log(
+        "🐝 newPosts: ",
+        newPosts.map((post) => ({ title: post?.title, tags: post?.tags }))
+      );
+    }
+    return newPosts;
   });
 
-  // Get infor from techs.json for items in skills.json
-  eleventyConfig.addFilter("getTech", function (techId, techArray) {
+  /**
+   * Create a new post list based on a tag
+   * @param {Array} posts - list of posts which can be internal posts or external posts
+   * @param {Object} options - options
+   * @param {string} options.categoryName - category name to be used for filtering
+   * @param {boolean} options.byTag - if true, filter by tag (if tag presents in tags),
+   *  else filter by category (only the 1st tag is used)
+   * @param {boolean} options.debug - Activate the debug mode
+   * @param {string} options.debugSource - Source of the debug
+   * @returns {Array} - list of new posts
+   */
+  eleventyConfig.addFilter("filterByCategory", function (posts, options) {
+    if (options?.debug) console.log("🐞 Called from: ", options?.debugSource);
+    const postAttributes = [
+      // "date" will be treated differently
+      "inputPath",
+      "tags",
+      "title",
+      "url",
+      // Below are custom attributes
+      "hide",
+      "keywords",
+      "lowQuality",
+      "notfull",
+      "part",
+      "partName",
+      "private",
+    ];
+    const filteredPosts = [];
+    if (posts && posts.length) {
+      for (const post of posts) {
+        if (!post?.hide) {
+          if (options.categoryName !== "all") {
+            if (
+              (get(post, "tags[0]") == options.categoryName && // post.data.tags[0] is "Blog" for blog posts
+                !get(post, "hide") &&
+                !options?.byTag) ||
+              (get(post, "tags")?.includes(options.categoryName) &&
+                !get(post, "hide") &&
+                options?.byTag) ||
+              (get(post, "tags[1]") == options.categoryName && // also allow Blog displayed in the notes, their [1] is the category
+                get(post, "tags[0]") == "Blog" &&
+                !options?.byTag)
+            ) {
+              let singlePost = {};
+              singlePost = assignSinglePost(singlePost, post, options);
+              filteredPosts.push(singlePost);
+            }
+          } else {
+            if (!post?.hide) {
+              let singlePost = {};
+              singlePost = assignSinglePost(singlePost, post, options);
+              filteredPosts.push(singlePost);
+            }
+          }
+        }
+      }
+    }
+
+    function assignSinglePost(singlePost, post, options) {
+      if (post?.date) singlePost.date = new Date(post.date);
+      if (post?.tags) singlePost.cat = post.tags[0];
+      if (post?.tags?.includes("Blog")) singlePost.isBlog = true;
+      if (options?.external) singlePost.external = true;
+      singlePost.target = options?.external ? "_blank" : "_self";
+      for (const att of postAttributes) {
+        if (get(post, att)) singlePost[att] = get(post, att);
+      }
+      return singlePost;
+    }
+
+    return filteredPosts;
+  });
+
+  /**
+   * Concat 2 arrays
+   */
+  eleventyConfig.addFilter("concat", function (arr1, arr2) {
+    return arr1.concat(arr2);
+  });
+
+  /**
+   * Get infor from techs.json for items in skills.json
+   * How to use: {% set itemInfo = techs | getTech(techId) %}
+   */
+  eleventyConfig.addFilter("getTech", function (techArray, techId) {
     return techArray.find((tech) => tech.id === techId);
   });
 
-  // Get the right series in noptes/_data/series.json for a post
+  /**
+   * Get category from categories.json
+   * How to use: {% set cat = categories | getCategory(catName) %}
+   */
+  eleventyConfig.addFilter("getCategory", function (catArr, catName) {
+    return catArr.find((cate) => cate.name === catName);
+  });
+
+  /**
+   * Get category from categories.json
+   * How to use: {% set singleSeries = series | getSeries(basePartUrl) %}
+   */
   eleventyConfig.addFilter("getSeries", function (seriesList, basePartUrl) {
     return seriesList.find((series) => series.basePartUrl === basePartUrl);
   });
+
+  /**
+   * Check if updated? new? for a post
+   * How to use: {% set status = post.date | checkDateStatus(post.inputPath) %}
+   */
+  eleventyConfig.addFilter(
+    "checkDateStatus",
+    function (postDateStr, postInputPath) {
+      if (!postDateStr || !postInputPath) return null;
+      const postDate = new Date(postDateStr);
+      const originalDate = new Date(
+        postInputPath.match(/\d{4}-\d{2}-\d{2}/gm)[0]
+      );
+      const inDays = 1000 * 60 * 60 * 24;
+      const durationInDays =
+        (new Date().getTime() - postDate.getTime()) / inDays;
+
+      if (durationInDays < 10) {
+        if (
+          Math.abs(postDate.getTime() - originalDate.getTime()) / inDays <
+          2
+        ) {
+          return "new";
+        } else {
+          return "updated";
+        }
+      }
+      return null;
+    }
+  );
 
   // Get random colors (from a predefined set) for bottom-wave in blog cards
   eleventyConfig.addFilter("getRandomColor", function (name, _postIdx, idx) {
@@ -281,17 +436,19 @@ module.exports = function (eleventyConfig) {
         tags: page.tags,
         cat: page.cat,
         icon: page.cat
-          ? categories.find((item) => item.name === page.cat).fontello
+          ? categories.find((item) => item.name === page.cat)
+            ? categories.find((item) => item.name === page.cat).fontello
+            : "icon-tags"
           : "icon-tags",
         iconColor: page.cat
-          ? _.get(
+          ? get(
               categories.find((item) => item.name === page.cat),
               "color",
               "#fff"
             )
           : "#fff",
         target: page.target,
-        privatePost: page.privatePost,
+        privatePost: page.private,
         //"content": page.templateContent,
       });
     });
@@ -536,7 +693,7 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.setBrowserSyncConfig({
     callbacks: {
-      ready: function (err, browserSync) {
+      ready: function (_err, browserSync) {
         const content_404 = fs.readFileSync(distPath + "/404.html");
 
         browserSync.addMiddleware("*", (req, res) => {

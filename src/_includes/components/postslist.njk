@@ -5,7 +5,7 @@
   - sortBy ('date')
   - customIcon (boolean)
 
-    For customized attributes like "notfull", modify in notes/_data/post_attributes.json
+  For customized attributes like "notfull", modify in notes/_data/custom_post_attributes.json
 #}
 
 <div class="toggle-posts{% if customClass %} {{ customClass }}{% endif %}">
@@ -36,7 +36,7 @@
         {% endif %}
         {% if 'list-of-blog' in customClass %} _blog-card{% endif %}
       ">
-        {% if customIcon %}
+          {% if customIcon %}
             {% if post.isBlog %}
               {% set blogItem = categories | getBlog %}
               <i class="{{ blogItem.fontello }} fontello-icon" style="color: {{ blogItem.color }};"></i>
@@ -49,10 +49,10 @@
             {% endif %}
           {% endif %}
 
-            {% if not 'list-of-blog' in customClass %}
+          {% if not 'list-of-blog' in customClass %}
             <a href="{{ post.url | url }}" rel="noopener noreferrer" target="{{ target }}">
             {% endif %}
-          
+
             {% if post.title %}
               <span class="card-title">
                 {{ post.title }}
@@ -115,7 +115,7 @@
               {% endif %}
             {% endif %}
 
-        {% if not 'list-of-blog' in customClass %}
+            {% if not 'list-of-blog' in customClass %}
             </a>
             {% set status = post.date | checkDateStatus(post.inputPath) %}
             {% if status == 'new' or status == 'updated' %}

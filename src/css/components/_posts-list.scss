@@ -69,12 +69,12 @@
   row-gap: $post-gap;
   column-gap: $post-gap;
 
-    // Check _index.scss too
+  // Check _index.scss too
 
-    @include screen-xxl-up {
-      grid-template-columns: repeat(5, 1fr);
-    }
-  
+  @include screen-xxl-up {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
   @include screen-xxl-down {
     grid-template-columns: repeat(4, 1fr);
   }

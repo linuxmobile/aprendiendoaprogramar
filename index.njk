@@ -60,8 +60,7 @@ date: Last Modified
         {% endif %}
       </h2>
     </div>
-    {% set newPostListCat = cat_ex_posts | filterByTag('all') %}
-    {% set morePosts = newPostListCat %}
+
     {% set customClass = 'list-homepage list-of-post' %}
     {% set customIcon = true %}
     {% set sortBy = 'date' %}
@@ -114,4 +113,5 @@ date: Last Modified
       {% endfor %}
     </div>
   </div>
+
 </div>

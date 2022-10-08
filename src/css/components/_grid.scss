@@ -13,7 +13,7 @@ main {
 
 
 #main-wrapper {
-  padding: 3rem $padding-margin;
+  padding: 0 $padding-margin;
 }
 
 .d-flex {
@@ -50,12 +50,6 @@ main {
   &.ex-normal {
     @media (min-width: $grid-xl) {
       width: $grid-w-ex-normal;
-    }
-  }
-
-  &._gap {
-    &.__big {
-      gap: 3rem;
     }
   }
 }

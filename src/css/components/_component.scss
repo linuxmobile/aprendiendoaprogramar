@@ -632,17 +632,10 @@ input[type="search"]::-webkit-search-results-decoration {
   display: flex;
   align-items: center;
   .toggle-text {
-    margin-left: 3px;
+    color: var(--color-faded);
     font-size: 88%;
+    margin-left: 3px;
   }
-}
-
-.toggle-label {
-  color: var(--color-faded);
-}
-
-.blog-posts-label {
-  font-size: 95%;
 }
 
 .hide-category {
@@ -745,7 +738,6 @@ input[type="search"]::-webkit-search-results-decoration {
     background: var(--badge-black-bg);
     padding: 3px;
     border-radius: $box-border-radius;
-    height: 27px;
     picture {
       display: inline-flex;
     }
@@ -760,9 +752,5 @@ input[type="search"]::-webkit-search-results-decoration {
     color: var(--color-faded);
     font-family: monospace;
     word-spacing: -3px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }

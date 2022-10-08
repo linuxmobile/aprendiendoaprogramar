@@ -90,17 +90,8 @@ nav {
     .nav-item {
       margin-right: $spacing-right-item;
       text-align: left;
-
-      &:not(.nav-avatar) {
-        height: 35px;
-      }
-
       @include screen-sm-down {
         width: unset !important;
-
-        &.nav-about {
-          margin-right: 15px;
-        }
       }
 
       &:last-child {
@@ -136,11 +127,6 @@ nav {
           background: #191724;
         }
       }
-
-      img.nav-item__icon {
-        height: 80%;
-        margin-right: 5px;
-      }
     }
 
     .nav-dark-light {
@@ -156,9 +142,9 @@ nav {
       display: block;
       background: #1f1d2e;
       border-radius: 0.5rem;
+      width: 100%;
       position: relative;
       margin-right: $spacing-right-item;
-      flex: 1;
       form {
         display: flex;
         flex: 1;

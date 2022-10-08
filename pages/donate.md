@@ -1,18 +1,16 @@
 ---
 layout: post
-title: Support Thi
+title: Quieres demostrarme tu apoyo?
 icon: donate.svg
-permalink: /support-thi/
-noOutdated: true
+permalink: /support-linux/
 ---
 
-I spend a lot of time learning something new. After each journey, I find that there is a shorter way that I wish I had known before. For this reason, I write ==**for free**== about the things I know/understand to help others save their time. If you find my work useful, give me some motivation, I'll be very grateful.
+He invetido tiempo y esfuerzo para traer material nuevo y de calidad. Después de una larga camino tratando de aprender algunas cosas, me doy cuenta que siempre hay un camino más sencillo. Por eso traigo este blog de notas ==**gratuito**== para compartiles lo que yo he aprendido. Si encontras todo este trabajo útil, y realmente te sirvió de ayuda, me encantaría que pudieras apoyarme, de alguna forma!
 
 {:.indent}
-- **Paypal**[/dinhanhthi](https://www.paypal.me/DinhAnhThi)
-- **Ko-fi**[/dinhanhthi](https://www.ko-fi.com/dinhanhthi)
-- **Buy Me A Coffee**[/dinhanhthi](https://www.buymeacoffee.com/dinhanhthi)
-- **Momo** (in Vietnam only): _(+84)0898053074_
-- **Encourage me with a letter**: [me@dinhanhthi.com](mailto:me@dinhanhthi.com)
+- **Paypal**[/linuxmobile](https://www.paypal.me/linuxmobile)
+- **Ko-fi**[/linuxmobile](https://www.ko-fi.com/linuxmobile)
+- **Buy Me A Coffee**[/linuxmobile](https://www.buymeacoffee.com/linuxmobile)
+- **Encourage me with a letter**: [bdiez19@gmail.com](mailto:bdiez19@gmail.com)
 
-Thank you so much 💖.
+Muchas gracias por leer el blog, y llegar hasta este punto 💖.

@@ -60,7 +60,6 @@ header nav {
     }
     &.current {
       cursor: default;
-      background: #d9fbff;
     }
     &:not(.current):not(.disabled):hover {
       border: none;
@@ -81,7 +80,7 @@ header {
     padding: 8rem $padding-margin 3rem;
     @include screen-lg-up {
       padding-left: 0;
-      padding-right: 0;
+      padding-right: 2 * $padding-margin;
     }
   }
 
@@ -220,11 +219,11 @@ header {
   }
   &.wave-border-gray::after {
     background: hsla(0, 0%, 100%, 0.5);
-    background-image: var(--wave-border-gray-header);
+    background-image: var(--wave-bd-index);
   }
   &.wave-border-white::after {
     background: #fff;
-    background-image: var(--wave-border-white-header);
+    background-image: var(--wave-bd-post);
   }
 }
 
@@ -331,10 +330,6 @@ p.contact {
       margin-left: 5px;
       font-family: $font-main;
       font-weight: $font-bold-weight;
-    }
-    .post-part-name {
-      font-size: 75%;
-      color: $color-yellow;
     }
   }
   .blog-description {

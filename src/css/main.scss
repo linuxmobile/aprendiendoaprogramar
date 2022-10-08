@@ -87,7 +87,7 @@ $header-logo: 55px;
 $box-border-radius: 5px;
 $li-margin-bottom: 5px;
 $bg-comment-container: #acd3ff17;
-$bg-comment-container-light: #f4f4f4;
+$bg-comment-container-light: #e0e5fb73;
 
 // CODE
 $code-font-size: 0.9 * $font-size;
@@ -121,15 +121,6 @@ $badge-reading: #9cfea1;
 $badge-reading-light: #15941c;
 $badge-choice: #ff9fe4;
 $badge-choice-light: #ac3b8c;
-
-$status-updated: #42c8424d;
-$status-updated-light: #cfffcf6b;
-$status-updated-text: #fff;
-$status-updated-text-light: #2d6f2d;
-$status-new: #ffb805a6;
-$status-new-light: #ffebad80;
-$status-new-text: #fff;
-$status-new-text-light: #d4892e;
 
 // DARK/LIGHT THINGS
 $a-list-homepage: #ddd;
@@ -194,7 +185,7 @@ $post-gap: 1.5rem;
 $min-blog-card-width: 250px;
 $max-blog-card-width: 350px;
 $min-blog-card-height: 10rem;
-$blog-card-title-color: #fff;
+$blog-card-title-color: #dadada;
 $blog-card-title-color-light: #555;
 $part-name-bg: $bg-blog-card;
 $part-name-bg-light: #fff5df;
@@ -218,7 +209,6 @@ $part-name-bg-light: #fff5df;
 @import "./components/component"; // all small components
 @import "./components/texmath"; // markdown-it-texmath
 @import "./components/blog";
-@import "./components/notes";
 @import "./components/post";
 @import "./components/prism-vscode"; // with my custom
 @import "./components/code";

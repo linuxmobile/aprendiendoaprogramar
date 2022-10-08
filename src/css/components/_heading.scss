@@ -223,14 +223,9 @@ h4 {
     line-height: 1;
     margin-bottom: 1.5rem;
     margin-top: 1rem;
-
-    &._d-flex {
-      display: flex;
-      align-items: center;
-    }
-
     img {
-      margin-right: 7px;
+      margin-right: 10px;
+      // display: none;
     }
 
     & > .fontello-icon + span {

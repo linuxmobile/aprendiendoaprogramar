@@ -3,29 +3,66 @@ layout: page
 containerWidth: wide
 permalink: /blog/
 icon: /img/cats/blog.svg
-title: All blog posts
+title: Todos los post en BLOG
 customClass: "page-blog bg-gray"
 containerBackgroundType: gray
 ---
 
 <div class="container wide">
 
+  {% set morePosts = false %}
   {# post outside 11ty .md files #}
-  {% set externalPosts = cat_ex_posts | concat(notion.json) %}
-  {% set internalPosts = collections['Blog'] | normalizePosts({debugSource: 'blog page'}) %}
-  {% set externalPostsByCategory = externalPosts | filterByCategory({categoryName: 'Blog', byTag: false, external: true, debugSource: 'blog - externalPosts'}) %}
-  {% set internalPostsByCategory = internalPosts | filterByCategory({categoryName: 'Blog', byTag: false, external: false, debugSource: 'blog - internal'}) %}
-  {% set newPostList = externalPostsByCategory | concat(internalPostsByCategory) %}
 
-  {% if newPostList | length > 0 %}
+  {% set tag = 'Blog' %}
+  {% set newPostListTag = [] %}
+
+  {% for post in cat_ex_posts %}
+    {% if not post.hide %}
+      {% for tg in post.tags %}
+        {% if tg == tag %}
+          {% set morePosts = true %}
+          {% set singlePost = {
+            'title': post.title,
+            'url': post.url,
+            'date': post.date | toDate,
+            'tags': post.tags
+          } %}
+          {% if post.notfull %}
+            {% set singlePost = singlePost | setAttribute('notfull', post.notfull) %}
+          {% endif %}
+          {% if post.part %}
+            {% set singlePost = singlePost | setAttribute('part', post.part) %}
+          {% endif %}
+          {% if post.partName %}
+            {% set singlePost = singlePost | setAttribute('partName', post.partName) %}
+          {% endif %}
+          {% if post.private %}
+            {% set singlePost = singlePost | setAttribute('private', post.private) %}
+          {% endif %}
+          {% set newPostListTag = (newPostListTag.push(singlePost), newPostListTag) %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+
+  {% if morePosts %}
+    {% set morePosts = newPostListTag %}
+  {% endif %}
+
+  {% set postslist = collections[tag] %}
+  {% set numberOfPosts = postslist | length + morePosts | length %}
+
+  {% if numberOfPosts > 0 %}
     {# {% set customClass = "single-line plain" %}
     {% include "components/toggle-posts-buttons.njk" %} #}
+
     {% set customClass = 'list-of-blog' %}
     {% set customIcon = false %}
     {% set sortBy = 'date' %}
-    {% include "components/postslist.njk" %}
+
+     {% include "components/postslist.njk" %}
   {% else %}
-    <div class="no-posts">This topic contains no post, please return later.</div>
+    <div class="no-posts">Este tema no contiene ninguna publicación, por favor regrese más tarde.</div>
   {% endif %}
 
 </div>

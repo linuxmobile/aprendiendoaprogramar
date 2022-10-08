@@ -1,4 +1,3 @@
-
 .category {
   width: 100%;
 
@@ -26,44 +25,55 @@
       padding: 1.5rem 1.5rem;
       box-shadow: 8px 14px 38px #272c310f, 1px 3px 8px #272c3108;
     }
-  }
-    // Check in _posts-list.scss too
-    .list-of-blog._hide-last {
-      @include screen-xxl-up {
-        & > :nth-last-child(1) {
-          display: none;
-        }
-      }
-  
-      @include screen-xxl-down {
-        & > :nth-last-child(-n+2) {
-          display: none;
-        }
-      }
-  
-      @include screen-xl-down {
-        & > :nth-last-child(-n+2) {
-          display: block;
-        }
-      }
-  
-      @include screen-lg-down {
-        & > :nth-last-child(-n+2) {
-          display: none;
-        }
-      }
-  
-      @include screen-sm-down {
-        & > :nth-last-child(-n+2) {
-          display: block;
-        }
+
+    .label-notes {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 90%;
+      opacity: 75%;
+      margin-top: 5px;
+      font-style: italic;
+      padding-left: 5px;
+      .fontello-icon::before {
+        font-style: italic;
       }
     }
-  
-
-  #notes {
-    margin-top: 3rem;
   }
+
+  // Check in _posts-list.scss too
+  .list-of-blog._hide-last {
+    @include screen-xxl-up {
+      & > :nth-last-child(1) {
+        display: none;
+      }
+    }
+
+    @include screen-xxl-down {
+      & > :nth-last-child(-n + 2) {
+        display: none;
+      }
+    }
+
+    @include screen-xl-down {
+      & > :nth-last-child(-n + 2) {
+        display: block;
+      }
+    }
+
+    @include screen-lg-down {
+      & > :nth-last-child(-n + 2) {
+        display: none;
+      }
+    }
+
+    @include screen-sm-down {
+      & > :nth-last-child(-n + 2) {
+        display: block;
+      }
+    }
+  }
+
   header {
     .header-container {
       p.intro {
@@ -73,6 +83,38 @@
     .header-logo {
       height: 120px;
       width: auto;
+    }
+  }
+
+  .topic-list {
+    display: flex;
+    flex-wrap: wrap;
+    // justify-content: space-between;
+    gap: 10px;
+    // &::after {
+    //   content: "";
+    //   flex: auto;
+    // }
+    .topic-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 15px;
+      border: 1px solid var(--code-bd);
+      box-shadow: 8px 14px 38px #272c310f, 1px 3px 8px #272c3108;
+      transition: box-shadow 0.1s ease, transform 0.3s ease;
+      background: var(--code-bg);
+      border-radius: 5px;
+      &:hover {
+        transform: translateY(-3px);
+      }
+      img {
+        height: 20px;
+        width: 20px;
+      }
+      ._name {
+        color: var(--a-list-homepage);
+      }
     }
   }
 }

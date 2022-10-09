@@ -25,6 +25,7 @@ var distPath;
 const categories = require("./" + thiDataDir + "/categories.json");
 const postAttributes = require("./" + thiDataDir + "/post_attributes.json");
 const waveColors = require("./src/_data/wave_colors");
+const { get } = require("lodash");
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss);
@@ -245,12 +246,12 @@ module.exports = function (eleventyConfig) {
     const filteredPosts = [];
     for (const post of posts) {
       if (!post?.hide) {
-        if (tag !== 'all') {
+        if (tag !== "all") {
           for (const tg of post?.tags) {
             if (tg == tag) {
               const singlePost = {
                 title: post?.title || "",
-                url: post?.url || ""
+                url: post?.url || "",
               };
               if (post?.date) singlePost.date = new Date(post.date);
               if (post?.tags) singlePost.tags = post.tags;
@@ -263,7 +264,7 @@ module.exports = function (eleventyConfig) {
         } else {
           const singlePost = {
             title: post?.title || "",
-            url: post?.url || ""
+            url: post?.url || "",
           };
           if (post?.date) singlePost.date = new Date(post.date);
           if (post?.tags) singlePost.tags = post.tags;
@@ -284,7 +285,6 @@ module.exports = function (eleventyConfig) {
    eleventyConfig.addFilter("getTech", function (techArray, techId) {
     return techArray.find((tech) => tech.id === techId);
   });
-
   
   /**
    * Get category from categories.json

@@ -7,13 +7,12 @@ const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const elasticlunr = require("elasticlunr");
 const { minify } = require("terser");
-const _ = require("lodash");
-
 const markdownIt = require("markdown-it");
 var markdownItp = require("markdown-it")();
 const mdItContainer = require("markdown-it-container");
 const tm = require("./third_party/markdown-it-texmath"); // copied from github:dinhanhthi/markdown-it-texmath
 const anchor = require("markdown-it-anchor");
+const { get } = require("lodash");
 
 const localImages = require("./third_party/eleventy-plugin-local-images/.eleventy.js");
 const CleanCSS = require("clean-css");
@@ -25,7 +24,7 @@ var distPath;
 const categories = require("./" + thiDataDir + "/categories.json");
 const postAttributes = require("./" + thiDataDir + "/post_attributes.json"); // custom post attributes
 const waveColors = require("./src/_data/wave_colors");
-const { get } = require("lodash");
+
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss);
@@ -242,13 +241,13 @@ module.exports = function (eleventyConfig) {
    * posts: eg. cat_ex_posts
    * tag: tagId
    */
-  eleventyConfig.addFilter("filterByTag", function (posts, tag) {
+  eleventyConfig.addFilter("filterByTag", function (posts, tagName) {
     const filteredPosts = [];
     for (const post of posts) {
       if (!post?.hide) {
-        if (tag !== "all") {
+        if (tagName !== "all") {
           for (const tg of post?.tags) {
-            if (tg == tag) {
+            if (tg == tagName) {
               const singlePost = {
                 title: post?.title || "",
                 url: post?.url || "",
@@ -278,6 +277,13 @@ module.exports = function (eleventyConfig) {
       }
     }
     return filteredPosts;
+  });
+
+  /**
+   * Concat 2 arrays
+   */
+   eleventyConfig.addFilter("concat", function (arr1, arr2) {
+    return arr1.concat(arr2);
   });
 
   /**
@@ -389,7 +395,7 @@ module.exports = function (eleventyConfig) {
           ? categories.find((item) => item.name === page.cat).fontello
           : "icon-tags",
         iconColor: page.cat
-          ? _.get(
+        ? get(
               categories.find((item) => item.name === page.cat),
               "color",
               "#fff"

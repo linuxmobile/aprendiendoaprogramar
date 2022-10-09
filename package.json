@@ -16,7 +16,7 @@
     "theming:serve-watch": "npx rimraf _built && ELEVENTY_ENV=theming eleventy --serve --watch",
     "full:serve-no-opt": "npx rimraf _built && ELEVENTY_ENV=full-no-opt eleventy --serve --watch --incremental",
     "full:watch-no-opt": "concurrently \"npm run css:watch-local\" \"npm run full:serve-no-opt\" \"npm run js:build-watch\" -c green,blue,red -n css,11ty,js",
-    "full:build-http-serve-opt": "npm run build && npm run full:http-serve-opt",
+    "full:http-serve-opt": "cp -Rf _site/* _live/ && http-server _live -p 8081",
     "css:build": "node-sass src/css/main.scss src/css/main.css",
     "css:prefix": "postcss src/css/main.css --use autoprefixer --replace true",
     "css:watch-local": "npx rimraf src/css/main.css && npm run css:build && node-sass -w --source-comments src/css/main.scss src/css/main.css",

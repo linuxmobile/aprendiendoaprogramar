@@ -1,5 +1,4 @@
 .post-container {
-  padding-top: 2.5rem;
   background: var(--color-background-post);
   padding-bottom: 3rem;
 }
@@ -130,6 +129,7 @@
 }
 
 #reading-list {
+  margin-top: 2rem;
   .item {
     .author {
       font-style: italic;

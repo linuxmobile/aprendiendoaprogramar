@@ -1,57 +1,19 @@
 {#
   Parameters:
-  - postslist
-  - morePosts
+  - newPostList
   - customClass (string)
   - sortBy ('date')
-  - limitPosts (number)
   - customIcon (boolean)
-  For customized attributes like "notfull", modify in notes/_data/post_attributes.json
+
+  For customized attributes like "notfull", modify in notes/_data/custom_post_attributes.json
 #}
 
 <div class="toggle-posts{% if customClass %} {{ customClass }}{% endif %}">
-
-  {% set newPostList = [] %}
-  {% for post in postslist %}
-    {% set singlePost = {
-      'title': post.data.title,
-      'url': post.url,
-      'date': post.date,
-      'isBlog': post.data.tags | isBlog,
-      'inputPath': post.inputPath
-    } %}
-    {% set singlePost = singlePost | assignAttributes(post.data) %}
-    {% if not post.data.hide %}
-      {% set newPostList = (newPostList.push(singlePost), newPostList) %}
-    {% endif %}
-  {% endfor %}
-
-  {% if morePosts %}
-    {% for post in morePosts %}
-      {% set singlePost = {
-        'title': post.title,
-        'url': post.url,
-        'target': "_blank",
-        'external': true,
-        'date': post.date,
-        'isBlog': post.tags | isBlog,
-        'inputPath': post.inputPath
-      } %}
-      {% set singlePost = singlePost | assignAttributes(post) %}
-      {% if not post.hide %}
-        {% set newPostList = (newPostList.push(singlePost), newPostList) %}
-      {% endif %}
-    {% endfor %}
-  {% endif %}
 
   {% if sortBy == 'date' %}
     {% set newPostList = newPostList | sort(attribute = 'date') | reverse %}
   {% else %}
     {% set newPostList = newPostList | sort(attribute = 'title') %}
-  {% endif %}
-
-  {% if limitPosts %}
-    {% set newPostList = newPostList | head(limitPosts) %}
   {% endif %}
 
   {% for post in newPostList %}
@@ -159,7 +121,7 @@
             {% if status == 'new' or status == 'updated' %}
               <span class="post-status {{ status }}">{{ status }}</span>
             {% endif %}
-            {% if post.date and showDate %} — <span class="last-modified">updated {{ post.date | toDuration }}</span>
+            {% if post.date and showDate %} — <span class="last-modified">actualizada {{ post.date | toDuration }}</span>
             {% endif %}
           {% endif %}
         </div>

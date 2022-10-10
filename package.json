@@ -1,10 +1,10 @@
 {
   "name": "dinhanhthi.com",
-  "version": "4.11.1",
+  "version": "4.12.1",
   "license": "MIT",
   "description": "A personal website for note-taking built based on 11ty engine with high performance.",
   "scripts": {
-    "clean": "npx rimraf _built && npx rimraf _site && npx rimraf _live",
+    "clean": "npx rimraf _built && npx rimraf _site && npx rimraf _live && npx rimraf .cache && npx rimraf .empty",
     "re-install": "npm run clean && npx rimraf ./node_modules && npx rimraf ./package-lock.json && npm i",
     "build-netlify": "npm run js:build && npm run css:build && npm run css:prefix && ELEVENTY_ENV=netlify eleventy",
     "build": "npx rimraf -rf _site && npm run js:build && npm run css:build && npm run css:prefix && eleventy && mkdir -p _live && npx rimraf -rf _live/* && cp -Rf _site/* _live/",
@@ -39,8 +39,7 @@
   },
   "homepage": "https://dinhanhthi.com",
   "devDependencies": {
-    "@11ty/eleventy": "^1.0.1",
-    "@11ty/eleventy-cache-assets": "^2.3.0",
+    "@11ty/eleventy": "^1.0.2",
     "@11ty/eleventy-plugin-rss": "^1.1.2",
     "@11ty/eleventy-plugin-syntaxhighlight": "^4.0.0",
     "@rollup/plugin-json": "^4.1.0",
@@ -74,7 +73,7 @@
     "hasha": "^5.2.0",
     "html-minifier": "^4.0.0",
     "image-size": "^0.8.3",
-    "jimp": "^0.16.0",
+    "jimp": "^0.16.1",
     "katex": "^0.13.18",
     "lru-cache": "^5.1.1",
     "markdown-it": "^12.3.2",

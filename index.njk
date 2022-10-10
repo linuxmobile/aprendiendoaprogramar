@@ -14,20 +14,23 @@ date: Last Modified
   {# Blog #}
   {% set blogCat = categories | getCategory('Blog') %}
   <div class="category-wrapper" name="{{ blogCat.name | lower | trim | replace(" ", "-") }}">
-    {% set externalPostsByCategory = externalPosts | filterByCategory({categoryName: 'Blog', byTag: false, external: true}) %}
-    {% set internalPosts = collections['Blog'] %}
-    {% set internalPostsByCategory = internalPosts | filterByCategory({categoryName: 'Blog', byTag: false, external: false}) %}
-    {% set newPostList = externalPostsByCategory | concat(internalPostsByCategory) %}
+    {% set morePosts = false %}
+    {% set newPostListCat = cat_ex_posts | filterByTag(blogCat.name) %}
+    {% if (newPostListCat | length) > 0 %}
+      {% set morePosts = newPostListCat %}
+    {% endif %}
+
+    {% set postslist = collections[blogCat.name] %}
     <div class="h2-dots _big _no-dots">
       <h2 id="{{ blogCat.name | lower | trim | replace(" ", "-") }}">
         <i class="{{ blogCat.fontello }} fontello-icon" style="color: {{ blogCat.color }};"></i>
         <span>Latest blog posts</span>
-        {% if newPostList | length > 6 %}
+        {% if postslist | length > 6 %}
           <a class="heading-more no-effect" href="/blog/">...more</a>
         {% endif %}
       </h2>
     </div>
-    {% if newPostList | length > 6 %}
+    {% if postslist | length > 6 %}
       {% set customClass = 'list-of-blog _hide-last' %}
     {% else %}
       {% set customClass = 'list-of-blog' %}
@@ -39,23 +42,20 @@ date: Last Modified
   </div>
 
   {# Notes #}
-  {% set newPostListCat = cat_ex_posts | filterByTag('all') %}
-  {% set internalPosts = collections.posts %}
-  {% set externalPostsByCategory = externalPosts | filterByCategory({categoryName: 'all', byTag: false, external: true}) %}
-  {% set internalPostsByCategory = internalPosts | filterByCategory({categoryName: 'all', byTag: false, external: false}) %}
-  {% set newPostList = externalPostsByCategory | concat(internalPostsByCategory) %}
+  {% set postslist = collections.posts %}
   {% set limitPosts = 9 %}
   <div class="category-wrapper" name="{{ blogCat.name | lower | trim | replace(" ", "-") }}">
     <div class="h2-dots _big _no-dots">
       <h2 id="notes">
         <img alt="Note icon" src="/img_src/icons/notes.svg" width="30" height="30" class="keep-original"/>
         <span>Recently updated notes</span>
-        {% if newPostList | length > 9 %}
+        {% if postslist | length > 9 %}
           <a class="heading-more no-effect" href="/notes/">...more</a>
         {% endif %}
       </h2>
     </div>
-    
+    {% set newPostListCat = cat_ex_posts | filterByTag('all') %}
+    {% set morePosts = newPostListCat %}
     {% set customClass = 'list-homepage list-of-post' %}
     {% set customIcon = true %}
     {% set sortBy = 'date' %}

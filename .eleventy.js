@@ -7,12 +7,13 @@ const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const elasticlunr = require("elasticlunr");
 const { minify } = require("terser");
+const _ = require("lodash");
+
 const markdownIt = require("markdown-it");
 var markdownItp = require("markdown-it")();
 const mdItContainer = require("markdown-it-container");
 const tm = require("./third_party/markdown-it-texmath"); // copied from github:dinhanhthi/markdown-it-texmath
 const anchor = require("markdown-it-anchor");
-const { get } = require("lodash");
 
 const localImages = require("./third_party/eleventy-plugin-local-images/.eleventy.js");
 const CleanCSS = require("clean-css");
@@ -22,7 +23,9 @@ var dataDir = thiDataDir;
 var distPath;
 
 const categories = require("./" + thiDataDir + "/categories.json");
+const postAttributes = require("./" + thiDataDir + "/post_attributes.json"); // custom post attributes
 const waveColors = require("./src/_data/wave_colors");
+const { get } = require("lodash");
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss);
@@ -67,6 +70,7 @@ module.exports = function (eleventyConfig) {
       eleventyConfig.ignores.delete("notes/blog_wip");
       eleventyConfig.ignores.delete("notes/posts_wip");
       eleventyConfig.ignores.delete("notes/fixed_notes");
+      eleventyConfig.ignores.add("notes/low-quality-posts");
       break;
 
     case "full-no-opt":
@@ -79,8 +83,9 @@ module.exports = function (eleventyConfig) {
       eleventyConfig.ignores.add("sample_posts");
       eleventyConfig.ignores.delete("notes/posts");
       eleventyConfig.ignores.delete("notes/blog");
-      eleventyConfig.ignores.delete("notes/blog_wip");
-      eleventyConfig.ignores.delete("notes/posts_wip");
+      eleventyConfig.ignores.add("notes/blog_wip");
+      eleventyConfig.ignores.add("notes/posts_wip");
+      eleventyConfig.ignores.delete("notes/low-quality-posts");
       eleventyConfig.ignores.delete("notes/fixed_notes");
       break;
 
@@ -94,8 +99,9 @@ module.exports = function (eleventyConfig) {
       eleventyConfig.ignores.delete("notes/blog");
       eleventyConfig.ignores.delete("notes/fixed_notes");
       eleventyConfig.ignores.add("sample_posts");
-      eleventyConfig.ignores.delete("notes/blog_wip");
-      eleventyConfig.ignores.delete("notes/posts_wip");
+      eleventyConfig.ignores.add("notes/blog_wip");
+      eleventyConfig.ignores.add("notes/posts_wip");
+      eleventyConfig.ignores.add("notes/low-quality-posts");
       // notesData
       eleventyConfig.ignores.add("notesData");
       eleventyConfig.addPlugin(localImages, {
@@ -118,16 +124,13 @@ module.exports = function (eleventyConfig) {
       eleventyConfig.ignores.add("sample_posts");
       eleventyConfig.ignores.add("notes/blog_wip");
       eleventyConfig.ignores.add("notes/posts_wip");
+      eleventyConfig.ignores.add("notes/low-quality-posts");
       eleventyConfig.addPlugin(localImages, {
         distPath: distPath,
         assetPath: "/img/remote",
         selector:
           "img,amp-img,amp-video,meta[property='og:image'],meta[name='twitter:image'],amp-story",
         verbose: false,
-      });
-      eleventyConfig.addPlugin(require("./src/_11ty/optimize-html.js"), {
-        distPath: distPath,
-        devMode: true,
       });
   }
 
@@ -225,52 +228,36 @@ module.exports = function (eleventyConfig) {
   });
 
   /**
-   * Create a new post list based on a tag
-   * @param {Array} posts - list of posts which can be internal posts or external posts
-   * @param {String} categoryName - category name to be used for filtering
-   * @param {Boolean} byTag - if true, filter by tag (it tag presents in tags),
-   *  else filter by category (only the 1st tag is used)
-   * @returns {Array} - list of new posts
+   * For assigning new attributes to a post from postData
    */
-   eleventyConfig.addFilter("filterByCategory", function (posts, options) {
-    const postAttributes = [
-      "title",
-      "tags",
-      "url",
-      "inputPath", // There is also "date" bug it'll be treated differently
-      // below are custom attributes
-      "notfull",
-      "private",
-      "lowQuality",
-      "part",
-      "partName",
-      "hide",
-    ];
+   eleventyConfig.addFilter("assignAttributes", function (post, postData) {
+    for (const att of postAttributes) {
+      if (postData[att]) post[att] = postData[att];
+    }
+    return post;
+  });
+
+  /**
+   * Create a new post list based on a tag
+   * posts: eg. cat_ex_posts
+   * tag: tagId
+   */
+  eleventyConfig.addFilter("filterByTag", function (posts, tag) {
     const filteredPosts = [];
-    if (posts && posts.length) {
-      for (const post of posts) {
-        if (!post?.hide) {
-          if (options.categoryName !== "all") {
-            if (
-              ((get(post, "tags[0]") == options.categoryName ||
-                get(post, "data.tags[1]") == options.categoryName || // post.data.tags[0] is "posts" for notes
-                get(post, "data.tags[0]") == options.categoryName) && // post.data.tags[0] is "Blog" for blog posts
-                !get(post, "data.hide") &&
-                !get(post, "hide") &&
-                !options?.byTag) ||
-              ((get(post, "data.tags")?.includes(options.categoryName) ||
-                get(post, "tags")?.includes(options.categoryName)) &&
-                !get(post, "data.hide") &&
-                !get(post, "hide") &&
-                options?.byTag)
-            ) {
-              const singlePost = {};
+    for (const post of posts) {
+      if (!post?.hide) {
+        if (tag !== "all") {
+          for (const tg of post?.tags) {
+            if (tg == tag) {
+              const singlePost = {
+                title: post?.title || "",
+                url: post?.url || "",
+              };
               if (post?.date) singlePost.date = new Date(post.date);
-              if (post?.tags?.includes("Blog")) singlePost.isBlog = true;
-              if (options?.external) singlePost.external = true;
+              if (post?.tags) singlePost.tags = post.tags;
+              if (post?.inputPath) singlePost.inputPath = post.inputPath;
               for (const att of postAttributes) {
-                if (get(post, att) || get(post, `data.${att}`))
-                  singlePost[att] = get(post, att) || get(post, `data.${att}`);
+                if (post[att]) singlePost[att] = post[att];
               }
               filteredPosts.push(singlePost);
             }
@@ -291,13 +278,6 @@ module.exports = function (eleventyConfig) {
       }
     }
     return filteredPosts;
-  });
-
-  /**
-   * Concat 2 arrays
-   */
-   eleventyConfig.addFilter("concat", function (arr1, arr2) {
-    return arr1.concat(arr2);
   });
 
   /**
@@ -340,7 +320,7 @@ module.exports = function (eleventyConfig) {
         const durationInDays =
           (new Date().getTime() - postDate.getTime()) / inDays;
   
-          if (durationInDays < 10) {
+        if (durationInDays < 14) {
           if (
             Math.abs(postDate.getTime() - originalDate.getTime()) / inDays <
             2
@@ -409,7 +389,7 @@ module.exports = function (eleventyConfig) {
           ? categories.find((item) => item.name === page.cat).fontello
           : "icon-tags",
         iconColor: page.cat
-        ? get(
+          ? _.get(
               categories.find((item) => item.name === page.cat),
               "color",
               "#fff"

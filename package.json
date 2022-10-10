@@ -4,7 +4,7 @@
   "license": "MIT",
   "description": "A personal website for note-taking built based on 11ty engine with high performance.",
   "scripts": {
-    "clean": "npx rimraf _built && npx rimraf _site && npx rimraf _live && npx rimraf .cache && npx rimraf .empty",
+    "clean": "npx rimraf _built && npx rimraf _site && npx rimraf _live",
     "re-install": "npm run clean && npx rimraf ./node_modules && npx rimraf ./package-lock.json && npm i",
     "build-netlify": "npm run js:build && npm run css:build && npm run css:prefix && ELEVENTY_ENV=netlify eleventy",
     "build": "npx rimraf -rf _site && npm run js:build && npm run css:build && npm run css:prefix && eleventy && mkdir -p _live && npx rimraf -rf _live/* && cp -Rf _site/* _live/",
@@ -39,7 +39,8 @@
   },
   "homepage": "https://dinhanhthi.com",
   "devDependencies": {
-    "@11ty/eleventy": "^1.0.2",
+    "@11ty/eleventy": "^1.0.1",
+    "@11ty/eleventy-cache-assets": "^2.3.0",
     "@11ty/eleventy-plugin-rss": "^1.1.2",
     "@11ty/eleventy-plugin-syntaxhighlight": "^4.0.0",
     "@rollup/plugin-json": "^4.1.0",

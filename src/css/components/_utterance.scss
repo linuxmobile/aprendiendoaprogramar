@@ -1,0 +1,26 @@
+.timeline-comment .comment {
+    background-color: #2a273f;
+    border: 1px solid #2a273f;
+}
+
+.timeline-comment .new-comment-header {
+    background-color: #2a273f;
+    border-bottom: 1px solid #2a273f;
+}
+
+.tabnav-tab.selected, .tabnav-tab[aria-current]:not([aria-current=false]), .tabnav-tab[aria-selected=true] {
+    background-color: #2c2d41;
+    border-color: #2c2d41;
+}
+
+.timeline-comment .comment-body textarea:disabled {
+    background-color: #2c2d41;
+}
+
+.timeline-comment .comment-body .markdown-body, .timeline-comment .comment-body textarea {
+    border: 1px solid #2c2d41;
+}
+
+.tabnav-tab {
+    color: #9acdf0;
+}
